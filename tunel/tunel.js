@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { CSG } from '../libs/CSG-v2.js'
 
-class ejer5 extends THREE.Object3D {
+class tunel extends THREE.Object3D {
   constructor(gui,titleGui) {
     super();
 
@@ -47,4 +47,4 @@ class ejer5 extends THREE.Object3D {
   }
 }
 
-export { ejer5 }
+export { tunel }
