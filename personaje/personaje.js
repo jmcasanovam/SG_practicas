@@ -43,7 +43,68 @@ class personaje extends THREE.Object3D {
     rodillaDer.position.set(-(0.025 + 0.01), -(0.15 - 0.04) - 0.04, 0);
     personaje.add(rodillaDer);
 
+    var cabeza = this.cretateCabeza();
+    cabeza.position.y = 0.1;
+    personaje.add(cabeza);
+
+    var cuello = this.createCuello();
+    cuello.position.y = 0.09;
+    personaje.add(cuello);
+
+    var sombrero = this.createSombrero();
+    sombrero.position.y = 0.17;
+    personaje.add(sombrero);
+
     return personaje;
+  }
+
+  cretateCabeza(){
+    // const geometry = new THREE.SphereGeometry( 0.05, 32, 16 ); 
+    // const material = new THREE.MeshStandardMaterial( { color: 0xffff00 } );
+    // const cabeza = new THREE.Mesh( geometry, material );
+    
+    var shape = new THREE.Shape();
+    shape.moveTo(0.001, 0);
+    shape.quadraticCurveTo(0.04, 0, 0.04, 0.04);
+    shape.lineTo(0.043, 0.055);
+    shape.lineTo(0.043, 0.07);
+    shape.lineTo(0.001, 0.07);
+    shape.lineTo(0.001, 0);
+    
+
+    var points = shape.extractPoints().shape;
+    const geometry = new THREE.LatheGeometry(points);
+    const material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
+    const cabeza = new THREE.Mesh(geometry, material);
+
+    return cabeza;
+  }
+
+  createCuello() {
+    const geometry = new THREE.CylinderGeometry(0.015, 0.015, 0.03, 32);
+    const material = new THREE.MeshStandardMaterial({ color: 0x000000 });
+    const cuello = new THREE.Mesh(geometry, material);
+
+    return cuello;
+  }
+
+  createSombrero() {
+    const ancho = 0.07;
+    const alto = 0.04;
+    var shape = new THREE.Shape();
+    shape.moveTo(0.001, 0);
+    shape.lineTo(ancho, 0);
+    shape.lineTo(ancho + 0.001, 0.01);
+    shape.lineTo(ancho / 2, 0.02);
+    shape.quadraticCurveTo(ancho / 2, alto, 0.001, alto);
+    shape.lineTo(0.001, 0);
+
+    var points = shape.extractPoints().shape;
+    const geometry = new THREE.LatheGeometry(points);
+    const material = new THREE.MeshStandardMaterial({ color: 0x000000 });
+    const sombrero = new THREE.Mesh(geometry, material);
+
+    return sombrero;
   }
 
   createBrazo(){
@@ -115,6 +176,11 @@ class personaje extends THREE.Object3D {
     var pierna = new THREE.Object3D();
     pierna.add(rodilla);
     pierna.add(espinilla);
+
+    var pie = new THREE.Mesh(geometryr, material);
+    pie.position.y = -(0.06);
+
+    pierna.add(pie);
 
 
 
