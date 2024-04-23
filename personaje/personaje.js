@@ -3,41 +3,47 @@ import * as THREE from 'three'
 class personaje extends THREE.Object3D {
   constructor() {
     super();
+    var personaje = this.createPersonaje();
+    this.add(personaje);
+  }
 
+  createPersonaje() {
     var personaje = new THREE.Object3D();
 
-    const geometrytr = new THREE.CylinderGeometry( 0.04, 0.07, 0.15, 32 ); 
-    const material = new THREE.MeshStandardMaterial( {color: 0xffff00} ); 
-
     var brazo1 = this.createBrazo();
-    brazo1.position.x=-0.06;
-    brazo1.position.y=0.065;
-    brazo1.rotation.z=-(Math.PI*30/360);
+    brazo1.position.x = -0.06;
+    brazo1.position.y = 0.065;
+    brazo1.rotation.z = -(Math.PI * 30 / 360);
+
     var brazo2 = this.createBrazo();
-    brazo2.position.x=0.06;
-    brazo2.position.y=0.065;
-    brazo2.rotation.z=(Math.PI*30/360);
+    brazo2.position.x = 0.06;
+    brazo2.position.y = 0.065;
+    brazo2.rotation.z = (Math.PI * 30 / 360);
 
-    
-
-    const tronco = new THREE.Mesh( geometrytr, material );
+    var tronco = this.createTronco();
 
     personaje.add(brazo1);
     personaje.add(brazo2);
     personaje.add(tronco)
 
 
-    var pierna=this.createPierna()
-    // this.add(pierna)
+    var piernaIzq = this.createPiernaSup();
+    piernaIzq.position.set(0.025+0.01, -(0.15-0.04), 0);
+    personaje.add(piernaIzq);
 
+    var piernaDer = this.createPiernaSup();
+    piernaDer.position.set(-(0.025 + 0.01), -(0.15 - 0.04), 0);
+    personaje.add(piernaDer);
 
+    var rodillaIzq = this.createPiernaInf();
+    rodillaIzq.position.set(0.025 + 0.01, -(0.15 - 0.04) - 0.04, 0);
+    personaje.add(rodillaIzq);
 
-   
+    var rodillaDer = this.createPiernaInf();
+    rodillaDer.position.set(-(0.025 + 0.01), -(0.15 - 0.04) - 0.04, 0);
+    personaje.add(rodillaDer);
 
-   
-    this.add(personaje);
-
-    
+    return personaje;
   }
 
   createBrazo(){
@@ -72,7 +78,7 @@ class personaje extends THREE.Object3D {
     return brazo;
   }
 
-  createPierna(){
+  createPiernaSup(){
     
 
     var shape=new THREE.Shape();
@@ -83,12 +89,45 @@ class personaje extends THREE.Object3D {
     shape.lineTo(0.00001, 0.04);
     shape.lineTo(0.00001, -0.04);
 
-    var points = shape.extractPoints(6).shape;  //siempre se pone esto
+    var points = shape.extractPoints().shape;
     const geometry=new THREE.LatheGeometry(points);
-    const material = new THREE.MeshStandardMaterial( { color: 0xf5f5f5, side:THREE.DoubleSide, flatShading:false} );
+    // const material = new THREE.MeshStandardMaterial( { color: 0xf5f5f5, side:THREE.DoubleSide, flatShading:false} );
+    const material = new THREE.MeshStandardMaterial({ color: 0xffff00 }); 
+
     const mesh = new THREE.Mesh( geometry, material ) ;
     return mesh;
 
+  }
+
+  createPiernaInf() {
+    const geometryr = new THREE.SphereGeometry(0.02, 32, 16); 
+    const material = new THREE.MeshStandardMaterial({ color: 0x000000 });
+    const material2 = new THREE.MeshStandardMaterial({ color: 0xffff00 });
+
+    var rodilla = new THREE.Mesh(geometryr, material);
+    // rodilla.position.y = -(0.3);
+
+    const geometry_pierna = new THREE.CylinderGeometry(0.015, 0.015, 0.06, 32);
+    
+    var espinilla = new THREE.Mesh(geometry_pierna, material2);
+    espinilla.position.y = -(0.03);
+
+    var pierna = new THREE.Object3D();
+    pierna.add(rodilla);
+    pierna.add(espinilla);
+
+
+
+
+    return pierna;
+  }
+
+  createTronco() {
+    const geometrytr = new THREE.CylinderGeometry(0.04, 0.07, 0.15, 32);
+    const material = new THREE.MeshStandardMaterial({ color: 0xffff00 }); 
+    var tronco = new THREE.Mesh(geometrytr, material);
+
+    return tronco;
   }
   
   update () {
