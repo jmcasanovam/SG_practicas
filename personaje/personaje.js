@@ -1,10 +1,29 @@
 import * as THREE from 'three'
 
 class personaje extends THREE.Object3D {
-  constructor() {
+  constructor(geometria) {
     super();
-    var personaje = this.createPersonaje();
-    this.add(personaje);
+    this.persona = this.createPersonaje();
+    this.tubo=geometria;
+    this.path=geometria.parameters.path;
+    this.radio=geometria.parameters.radius;
+    this.segmentos=geometria.parameters.tubularSegments;
+    this.t=0;
+
+    var posTmp=this.path.getPointAt(this.t);
+
+
+    this.persona.position.copy (posTmp);
+
+    var tangente= this.path.getTangentAt(this.t);
+    posTmp.add(tangente);
+    var segmentoActual=Math.floor(this.t * this.segmentos);
+    this.persona.up=this.tubo.binormals[segmentoActual];
+    this.persona.lookAt(posTmp);
+
+
+    
+    this.add(this.persona);
   }
 
   createPersonaje() {
@@ -54,7 +73,6 @@ class personaje extends THREE.Object3D {
     var sombrero = this.createSombrero();
     sombrero.position.y = 0.17;
     personaje.add(sombrero);
-
     return personaje;
   }
 
@@ -197,7 +215,16 @@ class personaje extends THREE.Object3D {
   }
   
   update () {
-    // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
+    this.t=(this.t+0.001)%1;
+    var posTmp=this.path.getPointAt(this.t);
+
+    this.persona.position.copy (posTmp);
+
+    var tangente= this.path.getTangentAt(this.t);
+    posTmp.add(tangente);
+    var segmentoActual=Math.floor(this.t * this.segmentos);
+    this.persona.up=this.tubo.binormals[segmentoActual];
+    this.persona.lookAt(posTmp);
   }
 }
 

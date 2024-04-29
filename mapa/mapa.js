@@ -5,14 +5,24 @@ class mapa extends THREE.Object3D {
   constructor() {
     super();
 
-    const geometryT = new THREE.TorusKnotGeometry( 7, 0.4); 
-
+    const geometryT = new THREE.TorusKnotGeometry( 2, 0.4); 
     const path = this.getPathFromTorusKnot(geometryT);
-    const geometry = new THREE.TubeGeometry( path, 200, 0.4, 8, true );
-    const material = new THREE.MeshStandardMaterial( { color: 0xffff00 } ); 
-    const mesh = new THREE.Mesh( geometry, material );
+    this.geometry = new THREE.TubeGeometry( path, 200, 0.4, 8, true );
+    const material = new THREE.MeshStandardMaterial( { color: 0x0000ff , opacity:0.5, transparent:true } ); 
+    const mesh = new THREE.Mesh( this.geometry, material );
+
+    
     this.add( mesh );
-  }   
+  }
+
+  createMapa(){
+    
+    return mesh;
+  }
+
+  getGeometry(){
+    return this.geometry;
+  }
   
   getPathFromTorusKnot (torusKnot) {
     // La codificación de este método está basado
