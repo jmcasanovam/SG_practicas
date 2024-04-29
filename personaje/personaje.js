@@ -3,28 +3,51 @@ import * as THREE from 'three'
 class personaje extends THREE.Object3D {
   constructor(geometria) {
     super();
-    this.persona = this.createPersonaje();
     this.tubo=geometria;
     this.path=geometria.parameters.path;
     this.radio=geometria.parameters.radius;
     this.segmentos=geometria.parameters.tubularSegments;
     this.t=0;
+    this.r=0;
+
+
+
+    var persona = this.createPersonaje();
+    persona.position.y+=this.radio+0.2;
+
+    var superficie = new THREE.Object3D();
+    superficie.add(persona);
+
+    superficie.rotation.z=this.r;
+    var movlateral = new THREE.Object3D();
+    movlateral.add(superficie);
+
+    this.nodofinal = new THREE.Object3D();
+    this.nodofinal.add(movlateral);
+  
+
+
+
+
+
+   
 
     var posTmp=this.path.getPointAt(this.t);
 
 
-    this.persona.position.copy (posTmp);
+    this.nodofinal.position.copy (posTmp);
 
     var tangente= this.path.getTangentAt(this.t);
     posTmp.add(tangente);
     var segmentoActual=Math.floor(this.t * this.segmentos);
-    this.persona.up=this.tubo.binormals[segmentoActual];
-    this.persona.lookAt(posTmp);
+    this.nodofinal.up=this.tubo.binormals[segmentoActual];
+    this.nodofinal.lookAt(posTmp);
 
 
     
-    this.add(this.persona);
+    this.add(this.nodofinal);
   }
+
 
   createPersonaje() {
     var personaje = new THREE.Object3D();
@@ -73,6 +96,7 @@ class personaje extends THREE.Object3D {
     var sombrero = this.createSombrero();
     sombrero.position.y = 0.17;
     personaje.add(sombrero);
+
     return personaje;
   }
 
@@ -218,13 +242,13 @@ class personaje extends THREE.Object3D {
     this.t=(this.t+0.001)%1;
     var posTmp=this.path.getPointAt(this.t);
 
-    this.persona.position.copy (posTmp);
+    this.nodofinal.position.copy (posTmp);
 
     var tangente= this.path.getTangentAt(this.t);
     posTmp.add(tangente);
     var segmentoActual=Math.floor(this.t * this.segmentos);
-    this.persona.up=this.tubo.binormals[segmentoActual];
-    this.persona.lookAt(posTmp);
+    this.nodofinal.up=this.tubo.binormals[segmentoActual];
+    this.nodofinal.lookAt(posTmp);
   }
 }
 

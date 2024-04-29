@@ -5,10 +5,10 @@ class mapa extends THREE.Object3D {
   constructor() {
     super();
 
-    const geometryT = new THREE.TorusKnotGeometry( 2, 0.4); 
+    const geometryT = new THREE.TorusKnotGeometry( 2, 0.8); 
     const path = this.getPathFromTorusKnot(geometryT);
     this.geometry = new THREE.TubeGeometry( path, 200, 0.4, 8, true );
-    const material = new THREE.MeshStandardMaterial( { color: 0x0000ff , opacity:0.5, transparent:true } ); 
+    const material = new THREE.MeshStandardMaterial( { color: 0x0000ff } ); 
     const mesh = new THREE.Mesh( this.geometry, material );
 
     
