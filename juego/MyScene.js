@@ -84,6 +84,9 @@ class MyScene extends THREE.Scene {
         console.log("Objeto seleccionado otro");
         console.log(selectedObject.userData.name);
       }
+      if (selectedObject.userData) {
+        console.log("Objeto seleccionado ", selectedObject.userData.name);
+      }
 
 
       console.log("Objeto seleccionado ", selectedObject);

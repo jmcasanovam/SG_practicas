@@ -4,6 +4,7 @@ class dron extends THREE.Object3D {
   constructor() {
     super();
     var dron = this.createDron();
+    dron.userData = { name: "Dron" };
     this.add(dron);
   }
 
@@ -21,6 +22,12 @@ class dron extends THREE.Object3D {
     dron.add(brazo2);
     dron.add(brazo3);
     dron.add(brazo4);    
+
+    dron.traverse((child) => {//Se le asigna un nombre a cada objeto para poder identificarlo
+      if (child.isMesh) {
+        child.userData = { name: "Subobjeto del Dron" };
+      }
+    });
 
     return dron;
   }
