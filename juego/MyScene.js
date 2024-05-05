@@ -52,6 +52,43 @@ class MyScene extends THREE.Scene {
     this.model = new Juego(this.gui, "Controles de Juego");
     this.add (this.model);
   }
+
+  onDocumentMouseDown(event) {
+    event.preventDefault();
+    var mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = 1 - 2 * (event.clientY / window.innerHeight);
+    
+    var raycaster = new THREE.Raycaster();
+    var camera = this.getCamera();
+    raycaster.setFromCamera(mouse, camera);
+
+    const pickableObjects = [];
+
+    this.model.traverse((child) => {
+      if (child.isMesh) {
+        pickableObjects.push(child);
+      }
+    });
+
+    const pickedObjects = raycaster.intersectObjects(pickableObjects, true);
+    if (pickedObjects.length > 0) {
+      const selectedObject = pickedObjects[0].object;
+      const selectedPoint = pickedObjects[0].point;
+
+      if (selectedObject.name == "mapa") {
+        console.log("Mapa seleccionado");
+      } else if (selectedObject.name == "dron") {
+        console.log("Dron seleccionado");
+      } else {
+        console.log("Objeto seleccionado otro");
+        console.log(selectedObject.userData.name);
+      }
+
+
+      console.log("Objeto seleccionado ", selectedObject);
+    }
+  }
   
   createCamera () {
     // Para crear una cámara le indicamos
@@ -230,7 +267,8 @@ $(function () {
   var scene = new MyScene("#WebGL-output");
 
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
-  window.addEventListener ("resize", () => scene.onWindowResize());
+  window.addEventListener("resize", () => scene.onWindowResize());
+  document.addEventListener("mousedown", (event) => scene.onDocumentMouseDown(event));
   
   // Que no se nos olvide, la primera visualización.
   scene.update();
