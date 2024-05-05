@@ -268,7 +268,7 @@ $(function () {
 
   // Se añaden los listener de la aplicación. En este caso, el que va a comprobar cuándo se modifica el tamaño de la ventana de la aplicación.
   window.addEventListener("resize", () => scene.onWindowResize());
-  document.addEventListener("mousedown", (event) => scene.onDocumentMouseDown(event));
+  window.addEventListener("mousedown", (event) => scene.onDocumentMouseDown(event));
   
   // Que no se nos olvide, la primera visualización.
   scene.update();
