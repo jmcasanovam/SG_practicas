@@ -35,9 +35,12 @@ class personaje extends THREE.Object3D {
     this.nodofinal.up=this.tubo.binormals[segmentoActual];
     this.nodofinal.lookAt(posTmp);
 
-
-    
     this.add(this.nodofinal);
+  }
+
+  
+  getThirdPersonCamera(){
+    return this.camara;
   }
 
 
@@ -88,6 +91,12 @@ class personaje extends THREE.Object3D {
     var sombrero = this.createSombrero();
     sombrero.position.y = 0.17;
     personaje.add(sombrero);
+
+    this.camara = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 20);
+    personaje.add(this.camara);
+
+    this.camara.position.set(0, 0.2, -0.8);
+    this.camara.lookAt(0,0.1,0);
 
     return personaje;
   }
@@ -231,7 +240,7 @@ class personaje extends THREE.Object3D {
   }
   
   update () {
-    this.t=(this.t+0.001)%1;
+    this.t=(this.t+0.0005)%1;
     var posTmp=this.path.getPointAt(this.t);
 
     this.nodofinal.position.copy (posTmp);

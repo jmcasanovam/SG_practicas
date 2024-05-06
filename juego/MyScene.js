@@ -44,7 +44,7 @@ class MyScene extends THREE.Scene {
     // Todas las unidades están en metros
     this.axis = new THREE.AxesHelper (0.1);
     this.add (this.axis);
-    
+    this.camaraGeneral = false;
     
     // Por último creamos el modelo.
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
@@ -52,6 +52,27 @@ class MyScene extends THREE.Scene {
     this.model = new Juego(this.gui, "Controles de Juego");
     this.add (this.model);
   }
+
+  // handleKeyBoardEvents() {
+  //   document.addEventListener('keydown', (event) =>{
+  //     if (event.code === "Space") {
+  //       this.toggleCamera();
+  //     }
+  //   });
+  // }
+
+  // toggleCamera() {
+  //   this.camaraGeneral = !this.camaraGeneral;
+  //   this.updateActiveCamera();
+  // }
+
+  // updateActiveCamera() {
+  //   if (!this.camaraGeneral) {
+  //     this.camera = this.model.getCamara();
+  //   } else {
+  //     this.createCamera();
+  //   }
+  // }
 
   onDocumentMouseDown(event) {
     event.preventDefault();
@@ -221,9 +242,11 @@ class MyScene extends THREE.Scene {
   }
   
   getCamera () {
-    // En principio se devuelve la única cámara que tenemos
-    // Si hubiera varias cámaras, este método decidiría qué cámara devuelve cada vez que es consultado
-    return this.camera;
+    if (this.camaraGeneral) {
+      return this.camera;
+    } else {
+      return this.model.persona.getThirdPersonCamera();
+    }
   }
   
   setCameraAspect (ratio) {
