@@ -235,6 +235,24 @@ class personaje extends THREE.Object3D {
 
     return tronco;
   }
+
+  moveLeft() {
+    this.rotarI = true;
+    // this.r+=0.1;
+  }
+
+  moveRight() {
+    this.rotarD = true;
+    // this.r -= 0.1;
+  }
+
+  stopMovingLeft() {
+    this.rotarI = false;
+  }
+
+  stopMovingRight() {
+    this.rotarD = false;
+  }
   
   update () {
     this.t=(this.t+0.0005)%1;
@@ -247,6 +265,13 @@ class personaje extends THREE.Object3D {
     var segmentoActual=Math.floor(this.t * this.segmentos);
     this.nodofinal.up=this.tubo.binormals[segmentoActual];
     this.nodofinal.lookAt(posTmp);
+
+    if (this.rotarD) {
+      this.r += 0.1;
+    }else if (this.rotarI) {
+      this.r -= 0.1;
+    }
+    this.nodofinal.rotation.z = this.r;
   }
 }
 

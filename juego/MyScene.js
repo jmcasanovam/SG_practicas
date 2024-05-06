@@ -56,8 +56,34 @@ class MyScene extends THREE.Scene {
 
   handleKeyBoardEvents() {
     document.addEventListener('keydown', (event) =>{
-      if (event.code === "Space") {
+      switch (event.key) {
+      case 'a':
+        this.model.persona.moveLeft();
+        break;
+      case 'd':
+        this.model.persona.moveRight();
+        break;
+      case ' ':
         this.toggleCamera();
+        break;
+      default:
+        // if (event.code === "Space") {
+        //   this.toggleCamera();
+        // }
+        break;
+      }
+    });
+
+    document.addEventListener('keyup', (event) => {
+      switch (event.key) {
+      case 'a':
+        this.model.persona.stopMovingLeft();
+        break;
+      case 'd':
+        this.model.persona.stopMovingRight();
+        break;
+      default:
+        break;
       }
     });
   }
