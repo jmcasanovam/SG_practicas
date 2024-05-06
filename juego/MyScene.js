@@ -50,29 +50,30 @@ class MyScene extends THREE.Scene {
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     this.model = new Juego(this.gui, "Controles de Juego");
-    this.add (this.model);
+    this.add(this.model);
+    this.handleKeyBoardEvents();
   }
 
-  // handleKeyBoardEvents() {
-  //   document.addEventListener('keydown', (event) =>{
-  //     if (event.code === "Space") {
-  //       this.toggleCamera();
-  //     }
-  //   });
-  // }
+  handleKeyBoardEvents() {
+    document.addEventListener('keydown', (event) =>{
+      if (event.code === "Space") {
+        this.toggleCamera();
+      }
+    });
+  }
 
-  // toggleCamera() {
-  //   this.camaraGeneral = !this.camaraGeneral;
-  //   this.updateActiveCamera();
-  // }
+  toggleCamera() {
+    this.camaraGeneral = !this.camaraGeneral;
+    this.updateActiveCamera();
+  }
 
-  // updateActiveCamera() {
-  //   if (!this.camaraGeneral) {
-  //     this.camera = this.model.getCamara();
-  //   } else {
-  //     this.createCamera();
-  //   }
-  // }
+  updateActiveCamera() {
+    if (!this.camaraGeneral) {
+      this.camera = this.model.getCamara();
+    } else {
+      this.createCamera();
+    }
+  }
 
   onDocumentMouseDown(event) {
     event.preventDefault();

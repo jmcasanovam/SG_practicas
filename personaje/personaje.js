@@ -102,9 +102,6 @@ class personaje extends THREE.Object3D {
   }
 
   cretateCabeza(){
-    // const geometry = new THREE.SphereGeometry( 0.05, 32, 16 ); 
-    // const material = new THREE.MeshStandardMaterial( { color: 0xffff00 } );
-    // const cabeza = new THREE.Mesh( geometry, material );
     
     var shape = new THREE.Shape();
     shape.moveTo(0.001, 0);
