@@ -1,15 +1,15 @@
 import * as THREE from 'three'
 
 class dron extends THREE.Object3D {
-  constructor(geometria) {
+  constructor(geometria, pos, name) {
     super();
-    this.userData.name="Dron";
+    this.userData.name=name;
 
     this.tubo=geometria;
     this.path=geometria.parameters.path;
     this.radio=geometria.parameters.radius;
     this.segmentos=geometria.parameters.tubularSegments;
-    this.t=0.5;
+    this.t=pos;
     this.r=0;
 
 
@@ -149,7 +149,7 @@ class dron extends THREE.Object3D {
 
   
   update () {
-    this.r=(this.r+(Math.PI*2)*0.0001/360)%(Math.PI*2);
+    this.r=(this.r+(Math.PI*2)*0.5/360)%(Math.PI*2);
 
     this.superficie.rotation.z=this.r;
   }

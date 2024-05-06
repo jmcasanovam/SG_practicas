@@ -10,25 +10,28 @@ class Juego extends THREE.Object3D {
   constructor() {
     super();
 
-    var mapam = new mapa();
-    this.dronm = new dron(mapam.getGeometry());
-
-    // dronm.name = "dron";
-    // mapam.name = "mapa";
-    // this.name = "juego";
-    this.dronm.userData = { name: "dron" };
+    this.animados = new Array();
     
+
+    var mapam = new mapa();
+    this.dronm = new dron(mapam.getGeometry(), 0.5, "dron1");
+    this.dron2 = new dron(mapam.getGeometry(), 0.6, "dron2");
+    this.animados.push(this.dronm);
+    this.animados.push(this.dron2);
+
     this.persona = new personaje(mapam.getGeometry());
-    this.persona.name = "persona";
+    this.animados.push(this.persona);
 
     this.add(this.dronm);
+    this.add(this.dron2);
     this.add(this.persona);
     this.add(mapam);
   } 
   
   update () {
-    this.persona.update();
-    this.dronm.update();
+    for(let m of this.animados){
+      m.update();
+    }
   }
 }
 

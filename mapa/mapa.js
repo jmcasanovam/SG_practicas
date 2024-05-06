@@ -12,12 +12,8 @@ class mapa extends THREE.Object3D {
     const mesh = new THREE.Mesh( this.geometry, material );
 
     
-    this.add( mesh );
-  }
-
-  createMapa(){
     
-    return mesh;
+    this.add( mesh );
   }
 
   getGeometry(){

@@ -10,10 +10,8 @@ class personaje extends THREE.Object3D {
     this.t=0;
     this.r=0;
 
-
-
     var persona = this.createPersonaje();
-    persona.position.y+=this.radio+0.2;
+    persona.position.y+=this.radio+0.21;
 
     var superficie = new THREE.Object3D();
     superficie.add(persona);
