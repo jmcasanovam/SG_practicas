@@ -69,7 +69,7 @@ class MyScene extends THREE.Scene {
 
   updateActiveCamera() {
     if (!this.camaraGeneral) {
-      this.camera = this.model.getThirdPersonCamera();
+      this.camera = this.model.persona.getThirdPersonCamera();
     } else {
       this.createCamera();
     }
