@@ -76,9 +76,9 @@ class MyScene extends THREE.Scene {
       const selectedObject = pickedObjects[0].object;
       const selectedPoint = pickedObjects[0].point;
 
-      if (selectedObject.name == "mapa") {
+      if (selectedObject.userData.name == "mapa") {
         console.log("Mapa seleccionado");
-      } else if (selectedObject.name == "dron") {
+      } else if (selectedObject.userData.name == "Dron") {
         console.log("Dron seleccionado");
       } else {
         console.log("Objeto seleccionado otro");

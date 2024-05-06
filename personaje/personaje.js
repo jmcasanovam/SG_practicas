@@ -26,12 +26,6 @@ class personaje extends THREE.Object3D {
     this.nodofinal.add(movlateral);
   
 
-
-
-
-
-   
-
     var posTmp=this.path.getPointAt(this.t);
 
 

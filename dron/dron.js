@@ -1,11 +1,47 @@
 import * as THREE from 'three'
 
 class dron extends THREE.Object3D {
-  constructor() {
+  constructor(geometria) {
     super();
-    var dron = this.createDron();
-    dron.userData = { name: "Dron" };
-    this.add(dron);
+    this.userData.name="Dron";
+
+    this.tubo=geometria;
+    this.path=geometria.parameters.path;
+    this.radio=geometria.parameters.radius;
+    this.segmentos=geometria.parameters.tubularSegments;
+    this.t=0.5;
+    this.r=0;
+
+
+    this.dron = this.createDron();
+
+    this.dron.position.y+=this.radio+0.4;
+
+    this.superficie = new THREE.Object3D();
+    this.superficie.add(this.dron);
+    
+
+    this.superficie.rotation.z=this.r;
+    var movlateral = new THREE.Object3D();
+    movlateral.add(this.superficie);
+
+    this.nodofinal = new THREE.Object3D();
+    this.nodofinal.add(movlateral);
+
+
+    var posTmp=this.path.getPointAt(this.t);
+
+
+    this.nodofinal.position.copy (posTmp);
+
+    var tangente= this.path.getTangentAt(this.t);
+    posTmp.add(tangente);
+    var segmentoActual=Math.floor(this.t * this.segmentos);
+    this.nodofinal.up=this.tubo.binormals[segmentoActual];
+    this.nodofinal.lookAt(posTmp);
+
+
+    this.add(this.nodofinal);
   }
 
   createDron(){
@@ -21,11 +57,11 @@ class dron extends THREE.Object3D {
     dron.add(brazo1);
     dron.add(brazo2);
     dron.add(brazo3);
-    dron.add(brazo4);    
+    dron.add(brazo4);
 
     dron.traverse((child) => {//Se le asigna un nombre a cada objeto para poder identificarlo
       if (child.isMesh) {
-        child.userData = { name: "Subobjeto del Dron" };
+        child.userData = this.userData;
       }
     });
 
@@ -113,7 +149,9 @@ class dron extends THREE.Object3D {
 
   
   update () {
-    // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
+    this.r=(this.r+(Math.PI*2)*0.0001/360)%(Math.PI*2);
+
+    this.superficie.rotation.z=this.r;
   }
 }
 
