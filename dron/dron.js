@@ -4,6 +4,7 @@ class dron extends THREE.Object3D {
   constructor(geometria, pos, name) {
     super();
     this.userData.name=name;
+    this.efecto="dron";
 
     this.tubo=geometria;
     this.path=geometria.parameters.path;
@@ -42,6 +43,10 @@ class dron extends THREE.Object3D {
 
 
     this.add(this.nodofinal);
+  }
+
+  efecto(){
+    return "dron";
   }
 
   createDron(){

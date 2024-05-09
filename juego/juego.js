@@ -12,12 +12,32 @@ class Juego extends THREE.Object3D {
     super();
 
     this.animados = new Array();
+    this.picks = new Array();
+
     
 
     var mapam = new mapa();
     this.persona = new personaje(mapam.getGeometry());
-    this.dronm = new dron(mapam.getGeometry(), 0.5, "dron1");
-    this.dron2 = new dron(mapam.getGeometry(), 0.6, "dron2");
+    this.dron0 = new dron(mapam.getGeometry(), 0.2, "0");
+    this.dron1 = new dron(mapam.getGeometry(), 0.3, "1");
+    this.dron2 = new dron(mapam.getGeometry(), 0.4, "2");
+    this.dron3 = new dron(mapam.getGeometry(), 0.6, "3");
+    this.dron4 = new dron(mapam.getGeometry(), 0.7, "4");
+    this.dron5 = new dron(mapam.getGeometry(), 0.8, "5");
+    this.picks.push(this.dron0);
+    this.picks.push(this.dron1);
+    this.picks.push(this.dron2);
+    this.picks.push(this.dron3);
+    this.picks.push(this.dron4);
+    this.picks.push(this.dron5);
+    
+    this.animados.push(this.dron0);
+    this.animados.push(this.dron1);
+    this.animados.push(this.dron2);
+    this.animados.push(this.dron3);
+    this.animados.push(this.dron4);
+    this.animados.push(this.dron5);
+
     this.jeringa= new jeringuilla(mapam.getGeometry(), 0.1);
     this.jeringa2 = new jeringuilla(mapam.getGeometry(), 0.2);
     this.jeringa3 = new jeringuilla(mapam.getGeometry(), 0.3);
@@ -41,17 +61,16 @@ class Juego extends THREE.Object3D {
     this.objetosColisiones.push(this.jeringa5);
     this.objetosColisiones.push(this.jeringa6);
 
-    this.animados.push(this.dronm);
-    this.animados.push(this.dron2);
-
     this.animados.push(this.persona);
 
     for(let jer of this.objetosColisiones){
       this.add(jer);
     }
+    for(let jer of this.picks){
+      this.add(jer);
+    }
 
-    this.add(this.dronm);
-    this.add(this.dron2);
+    
     this.add(this.persona);
     this.add(mapam);
   }
@@ -83,6 +102,17 @@ class Juego extends THREE.Object3D {
     this.cajasColisiones.push(cajaFigura5);
     this.cajasColisiones.push(cajaFigura6);
 
+  }
+
+  pickeado(n) {
+    
+    var indice = parseInt(n);
+    if (n < this.picks.length && n >= 0) {
+      var objeto = this.picks[indice];
+      this.persona.efecto(objeto.efecto);
+      this.remove(this.picks[indice]);
+    }
+    
   }
 
   revisarColisiones() {

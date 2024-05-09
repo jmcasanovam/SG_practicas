@@ -121,12 +121,29 @@ class MyScene extends THREE.Scene {
 
     const pickedObjects = raycaster.intersectObjects(pickableObjects, true);
     if (pickedObjects.length > 0) {
-      const selectedObject = pickedObjects[0].object;
+      this.selectedObject = pickedObjects[0].object;
       const selectedPoint = pickedObjects[0].point;
 
-     if (selectedObject.userData.name == "dron1") {
-        console.log("Dron seleccionado");
-      }
+    //  if (this.selectedObject.userData.name == "dron") {
+    //    // this.model.persona.efecto(this.model.dronm.efecto());
+    //    console.log("Le has dado al dron:" + this.selectedObject.efecto);
+    //    this.model.persona.efecto("dron");
+      //   }
+      // console.log("Soy un objeto 3d: " + this.selectedObject.isObject3D);
+      // console.log("Tengo este efecto: " + this.selectedObject.efecto);
+
+      // this.model.persona.efecto(this.selectedObject.userData.name);
+      // var indice = this.model.indexOf(this.selectedObject);
+      // if (indice != -1) {
+      //   this.model.splice(indice, 1);
+      // } else {
+      //   console.log("El objeto no está en el array");
+      // }
+      // console.log("Le has dado al dron:" + this.selectedObject.efecto);
+
+
+      this.model.pickeado(this.selectedObject.userData.name);
+    
     }
   }
   

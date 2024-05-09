@@ -259,20 +259,27 @@ class personaje extends THREE.Object3D {
     this.avance=0.0005;
     this.contadorlento=0;
     this.empiezalento = false;
+    this.puntuacion=0;
+    this.vueltas=0;
   }
 
   efecto(n){
+    console.log("efecto:"+n);
     switch(n){
       case "jeringuilla":
         this.lento=true;
         this.empiezalento = false;
         break;
+      case "dron":
+        this.puntuacion+=100;
       default:
         break;
     }
   }
   
   update () {
+    console.log("Puntuacion: "+this.puntuacion);
+    console.log("Vueltas: "+this.vueltas);
     if(this.lento && !this.empiezalento){
       this.contadorlento=200;
       this.empiezalento=true;
@@ -281,17 +288,24 @@ class personaje extends THREE.Object3D {
     if (this.lento && this.contadorlento!=0) {
       this.avance =0.00015;
       this.contadorlento= this.contadorlento-1;
-      console.log(">>"+this.contadorlento);
     }
     else {
       this.avance=0.0006;
       this.lento = false;
       this.empiezalento=false;
-      console.log(">>" + this.contadorlento);
 
     }
+    
+    if (this.vueltas == 3) {
+      this.avance = 0;
+    }
 
-    this.t=(this.t+this.avance)%1;
+    this.t=(this.t+this.avance);
+    if (this.t >= 1) {
+      this.vueltas++;
+      this.t = this.t % 1;
+    }
+
     var posTmp=this.path.getPointAt(this.t);
 
     this.nodofinal.position.copy (posTmp);
