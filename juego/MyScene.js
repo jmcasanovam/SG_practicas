@@ -126,16 +126,7 @@ class MyScene extends THREE.Scene {
 
      if (selectedObject.userData.name == "dron1") {
         console.log("Dron seleccionado");
-      } else {
-        console.log("Objeto seleccionado otro");
-        console.log(selectedObject.userData.name);
       }
-      if (selectedObject.userData) {
-        console.log("Objeto seleccionado ", selectedObject.userData.name);
-      }
-
-
-      console.log("Objeto seleccionado ", selectedObject);
     }
   }
   

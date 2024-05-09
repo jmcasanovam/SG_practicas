@@ -3,6 +3,7 @@ import * as THREE from 'three'
 class personaje extends THREE.Object3D {
   constructor(geometria) {
     super();
+    this.variablesEfectos();
     this.tubo=geometria;
     this.path=geometria.parameters.path;
     this.radio=geometria.parameters.radius;
@@ -95,7 +96,7 @@ class personaje extends THREE.Object3D {
     this.camara = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 20);
     personaje.add(this.camara);
 
-    this.camara.position.set(0, 0.2, -0.8);
+    this.camara.position.set(0, 0.5, -1.3);
     this.camara.lookAt(0,0.1,0);
 
     return personaje;
@@ -253,9 +254,44 @@ class personaje extends THREE.Object3D {
   stopMovingRight() {
     this.rotarD = false;
   }
+
+  variablesEfectos(){
+    this.avance=0.0005;
+    this.contadorlento=0;
+    this.empiezalento = false;
+  }
+
+  efecto(n){
+    switch(n){
+      case "jeringuilla":
+        this.lento=true;
+        this.empiezalento = false;
+        break;
+      default:
+        break;
+    }
+  }
   
   update () {
-    this.t=(this.t+0.0005)%1;
+    if(this.lento && !this.empiezalento){
+      this.contadorlento=200;
+      this.empiezalento=true;
+    }
+
+    if (this.lento && this.contadorlento!=0) {
+      this.avance =0.00015;
+      this.contadorlento= this.contadorlento-1;
+      console.log(">>"+this.contadorlento);
+    }
+    else {
+      this.avance=0.0006;
+      this.lento = false;
+      this.empiezalento=false;
+      console.log(">>" + this.contadorlento);
+
+    }
+
+    this.t=(this.t+this.avance)%1;
     var posTmp=this.path.getPointAt(this.t);
 
     this.nodofinal.position.copy (posTmp);
