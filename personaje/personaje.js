@@ -279,7 +279,7 @@ class personaje extends THREE.Object3D {
   
   update () {
     console.log("Puntuacion: "+this.puntuacion);
-    console.log("Vueltas: "+this.vueltas);
+    // console.log("Vueltas: "+this.vueltas);
     if(this.lento && !this.empiezalento){
       this.contadorlento=200;
       this.empiezalento=true;

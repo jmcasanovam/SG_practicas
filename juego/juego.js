@@ -4,6 +4,7 @@ import { dron } from '../dron/dron.js'
 import { personaje } from '../personaje/personaje.js'
 import { mapa } from '../mapa/mapa.js'
 import { jeringuilla } from '../jeringuilla/jeringuilla.js';
+import { CajaGlobos } from '../caja_globos/CajaGlobos.js';
 
 
 
@@ -24,12 +25,21 @@ class Juego extends THREE.Object3D {
     this.dron3 = new dron(mapam.getGeometry(), 0.6, "3");
     this.dron4 = new dron(mapam.getGeometry(), 0.7, "4");
     this.dron5 = new dron(mapam.getGeometry(), 0.8, "5");
+    this.cajag1 = new CajaGlobos(mapam.getGeometry(), 0.2, "6");
+    this.cajag2 = new CajaGlobos(mapam.getGeometry(), 0.4, "7");
+    this.cajag3 = new CajaGlobos(mapam.getGeometry(), 0.6, "8");
+
     this.picks.push(this.dron0);
     this.picks.push(this.dron1);
     this.picks.push(this.dron2);
     this.picks.push(this.dron3);
     this.picks.push(this.dron4);
     this.picks.push(this.dron5);
+    this.picks.push(this.cajag1);
+    this.picks.push(this.cajag2);
+    this.picks.push(this.cajag3);
+    
+
     
     this.animados.push(this.dron0);
     this.animados.push(this.dron1);
