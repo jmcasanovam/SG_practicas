@@ -5,6 +5,7 @@ import { personaje } from '../personaje/personaje.js'
 import { mapa } from '../mapa/mapa.js'
 import { jeringuilla } from '../jeringuilla/jeringuilla.js';
 import { CajaGlobos } from '../caja_globos/CajaGlobos.js';
+import { Esfera } from '../esfera/Esfera.js';
 
 
 
@@ -83,6 +84,9 @@ class Juego extends THREE.Object3D {
     
     this.add(this.persona);
     this.add(mapam);
+
+    this.esfera = new Esfera();
+    this.add(this.esfera);
 
     //Almacenar la luz para cambiar su color despues
     this.ambientLight = null;
