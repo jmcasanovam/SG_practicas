@@ -83,6 +83,14 @@ class jeringuilla extends THREE.Object3D {
   efecto(){
     return "jeringuilla";
   }
+
+  efectoLuces(ambientLight, pointLight) {
+    // return 0x00FF00;
+    ambientLight.color.set(0x000000);
+    ambientLight.intensity = 0.1;
+    pointLight.color.set(0xFFFFFF);
+    pointLight.intensity = 1;
+  }
   
   
   

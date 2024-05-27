@@ -51,6 +51,10 @@ class MyScene extends THREE.Scene {
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     this.model = new Juego(this.gui, "Controles de Juego");
     this.add(this.model);
+
+    // this.model.setPointLight(this.pointLight);
+    this.model.setLights(this.ambientLight, this.pointLight);
+
     this.handleKeyBoardEvents();
   }
 
@@ -143,6 +147,7 @@ class MyScene extends THREE.Scene {
 
 
       this.model.pickeado(this.selectedObject.userData.name);
+      
     
     }
   }

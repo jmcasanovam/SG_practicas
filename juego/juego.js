@@ -83,6 +83,15 @@ class Juego extends THREE.Object3D {
     
     this.add(this.persona);
     this.add(mapam);
+
+    //Almacenar la luz para cambiar su color despues
+    this.ambientLight = null;
+    this.pointLight = null;
+  }
+
+  setLights(ambientLight, pointLight) {
+    this.ambientLight = ambientLight;
+    this.pointLight = pointLight;
   }
 
   crearCajasColisiones() {
@@ -129,10 +138,26 @@ class Juego extends THREE.Object3D {
     for (let i=0; i<this.cajasColisiones.length; i++) {
       if(this.cajaPersona.intersectsBox(this.cajasColisiones[i])){
         this.contador += 1;
-        this.persona.efecto(this.objetosColisiones[i].efecto())
+        var objetoColisionado = this.objetosColisiones[i];
+        this.persona.efecto(objetoColisionado.efecto());
         this.cajasColisiones.splice(i, 1);
         this.remove(this.objetosColisiones[i]);
         this.objetosColisiones.splice(i, 1);
+
+        if (this.ambientLight && this.pointLight) {
+          // var red = Math.random() % 255;
+          // const newColor = new THREE.Color(red, (red+50)%255, (red+100)%255);
+          // this.light.color.set(newColor);
+          // this.light = this.objetosColisiones[i].efectoLuces();
+
+          
+          // this.ambientLight.color.set(objetoColisionado.efectoLuces());
+          // this.ambientLight.intensity = 0.1;
+          // this.pointLight.color.set(0xFFFFFF);
+          // this.pointLight.intensity = 1;
+
+          objetoColisionado.efectoLuces(this.ambientLight, this.pointLight);
+        }
       }
     }
     
