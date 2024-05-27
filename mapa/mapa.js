@@ -8,8 +8,8 @@ class mapa extends THREE.Object3D {
     const geometryT = new THREE.TorusKnotGeometry( 2, 0.8); 
     const path = this.getPathFromTorusKnot(geometryT);
     this.geometry = new THREE.TubeGeometry( path, 200, 0.4, 8, true );
-    const material = new THREE.MeshStandardMaterial( { color: 0x0000ff } ); 
-    // const material = this.crearMaterial();
+    // const material = new THREE.MeshStandardMaterial( { color: 0x0000ff } ); 
+    const material = this.crearMaterial();
     const mesh = new THREE.Mesh( this.geometry, material );
 
     
@@ -20,8 +20,14 @@ class mapa extends THREE.Object3D {
   crearMaterial() {
     var textureLoader = new THREE.TextureLoader();
     var texture = textureLoader.load('../imgs/cesped2.jpg');
+    var normalMap = textureLoader.load('../imgs/cesped2_normal.png');
 
-    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const material = new THREE.MeshStandardMaterial({ 
+      map: texture,
+      normalMap: normalMap,
+      normalScale: new THREE.Vector2(1, 1) // Ajusta este valor para cambiar la intensidad del relieve
+  });
+  
     return material;
   }
 

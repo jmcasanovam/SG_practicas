@@ -12,6 +12,7 @@ import { Esfera } from '../esfera/Esfera.js';
 class Juego extends THREE.Object3D {
   constructor() {
     super();
+    this.anima=true;
 
     this.animados = new Array();
     this.picks = new Array();
@@ -172,12 +173,16 @@ class Juego extends THREE.Object3D {
     }
     
   }
+  parar(){
+    this.anima=!this.anima;
+  }
   
   update () {
     this.cajaPersona.setFromObject(this.persona);
-    for(let m of this.animados){
-      m.update();
-    }
+    if(this.anima)
+      for(let m of this.animados){
+        m.update();
+      }
     this.revisarColisiones();
   }
 }

@@ -313,31 +313,16 @@ class personaje extends THREE.Object3D {
   }
 
   animacion(){
+    if(this.rotacionpierna>30) this.movimientopierna=false;
+    else if(this.rotacionpierna<-30) this.movimientopierna=true;
+
+    
     if(this.movimientopierna && this.contadorlento>0) this.rotacionpierna+=1;
     else if(!this.movimientopierna && this.contadorlento>0)this.rotacionpierna-=1;
     else if(this.movimientopierna) this.rotacionpierna+=2;
     else this.rotacionpierna-=2;
 
-
-    if(this.rotacionpierna>30) this.movimientopierna=false;
-    else if(this.rotacionpierna<-30) this.movimientopierna=true;
-
-    if(this.contadorlento>0){
-      if(this.rotacionpierna==0) this.rotacionrodilla=0;
-      else if(this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla+=2;
-      else if(!this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla-=2;
-      else if(this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla-=2;
-      else if(!this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla+=2;
-    }
-    else{
-      if(this.rotacionpierna==0) this.rotacionrodilla=0;
-      else if(this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla+=4;
-      else if(!this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla-=4;
-      else if(this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla-=4;
-      else if(!this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla+=4;
-    }
-    
-
+    this.rotacionrodilla=Math.abs(this.rotacionpierna)*2
 
     this.piernaIzquierda.rotation.x=this.rotacionpierna/180*Math.PI;
     this.piernaDerecha.rotation.x=this.rotacionpierna/180*Math.PI*-1;
