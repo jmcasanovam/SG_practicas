@@ -133,6 +133,12 @@ class Juego extends THREE.Object3D {
     if (n < this.picks.length && n >= 0) {
       var objeto = this.picks[indice];
       this.persona.efecto(objeto.efecto);
+      if(objeto.efecto=="caja globos"){
+        this.ambientLight.color.set(0xffffff);
+        this.ambientLight.intensity = 0.35;
+        this.pointLight.color.set(0xFFFFFF);
+        this.pointLight.power = 100;
+      }
       this.remove(this.picks[indice]);
     }
     

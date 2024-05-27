@@ -48,70 +48,66 @@ class personaje extends THREE.Object3D {
   createPersonaje() {
     var personaje = new THREE.Object3D();
 
-    var brazo1 = this.createBrazo();
-    brazo1.position.x = -0.06;
-    brazo1.position.y = 0.065;
-    brazo1.rotation.z = -(Math.PI * 30 / 360);
+    this.brazo1 = this.createBrazo();
+    this.brazo1.position.x = -0.06;
+    this.brazo1.position.y = 0.065;
+    this.brazo1.rotation.z = -(Math.PI * 30 / 360);
 
-    var brazo2 = this.createBrazo();
-    brazo2.position.x = 0.06;
-    brazo2.position.y = 0.065;
-    brazo2.rotation.z = (Math.PI * 30 / 360);
+    this.brazo2 = this.createBrazo();
+    this.brazo2.position.x = 0.06;
+    this.brazo2.position.y = 0.065;
+    this.brazo2.rotation.z = (Math.PI * 30 / 360);
 
     var tronco = this.createTronco();
 
-    personaje.add(brazo1);
-    personaje.add(brazo2);
+    personaje.add(this.brazo1);
+    personaje.add(this.brazo2);
     personaje.add(tronco)
 
     this.piernaIzquierda = new THREE.Object3D();
     this.piernaDerecha = new THREE.Object3D();
 
-    var piernaIzq = this.createPiernaSup();
-    piernaIzq.position.set(0.025+0.01, -(0.15-0.04), 0);
-    this.piernaIzquierda.add(piernaIzq);
-    // personaje.add(piernaIzq);
+    var piernaIzqSup = this.createPiernaSup();
+    piernaIzqSup.position.set(0.025+0.01, -(0.15-0.04), 0);
+    this.piernaIzquierda.add(piernaIzqSup);
 
-    var piernaDer = this.createPiernaSup();
-    piernaDer.position.set(-(0.025 + 0.01), -(0.15 - 0.04), 0);
-    this.piernaDerecha.add(piernaDer);
-    // personaje.add(piernaDer);
+    var piernaDerSup = this.createPiernaSup();
+    piernaDerSup.position.set(-(0.025 + 0.01), -(0.15 - 0.04), 0);
+    this.piernaDerecha.add(piernaDerSup);
 
-    var rodillaIzq = this.createPiernaInf();
-    rodillaIzq.position.set(0.025 + 0.01, -(0.15 - 0.04) - 0.04, 0);
-    this.piernaIzquierda.add(rodillaIzq);
-    // personaje.add(rodillaIzq);
+    this.piernaIzqInf = this.createPiernaInf();
+    this.piernaIzqInf.position.set(0.025 + 0.01, -(0.15 - 0.04) - 0.04, 0);
+    this.piernaIzquierda.add(this.piernaIzqInf);
 
-    var rodillaDer = this.createPiernaInf();
-    rodillaDer.position.set(-(0.025 + 0.01), -(0.15 - 0.04) - 0.04, 0);
-    this.piernaDerecha.add(rodillaDer);
-    // personaje.add(rodillaDer);
-
-
-    this.animacion();
-
+    this.piernaDerInf = this.createPiernaInf();
+    this.piernaDerInf.position.set(-(0.025 + 0.01), -(0.15 - 0.04) - 0.04, 0);
+    this.piernaDerecha.add(this.piernaDerInf);
 
     personaje.add(this.piernaIzquierda);
     personaje.add(this.piernaDerecha);
 
+    this.cabezon = new THREE.Object3D();
 
-    var cabeza = this.cretateCabeza();
-    cabeza.position.y = 0.1;
-    personaje.add(cabeza);
+    this.cabeza = this.cretateCabeza();
+    this.cabezon.add(this.cabeza);
+    this.cabezon.position.y = 0.07;
 
-    var cuello = this.createCuello();
-    cuello.position.y = 0.09;
-    personaje.add(cuello);
 
-    var sombrero = this.createSombrero();
-    sombrero.position.y = 0.17;
-    personaje.add(sombrero);
+    // this.cabezon.add(this.cabeza);
+
+     personaje.add(this.cabezon);
+
+    // personaje.add(this.cabeza);
+    
 
     this.camara = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 20);
     personaje.add(this.camara);
 
     this.camara.position.set(0, 0.5, -1.3);
     this.camara.lookAt(0,0.1,0);
+
+    this.animacion();
+
 
     return personaje;
   }
@@ -129,10 +125,28 @@ class personaje extends THREE.Object3D {
 
     var points = shape.extractPoints().shape;
     const geometry = new THREE.LatheGeometry(points);
-    const material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
+    const material = new THREE.MeshStandardMaterial({ color: 0xeccd6a });
     const cabeza = new THREE.Mesh(geometry, material);
 
-    return cabeza;
+    var cabezaconsombrero = new THREE.Object3D();
+    cabezaconsombrero.add(cabeza);
+
+    var sombrero = this.createSombrero();
+    sombrero.position.y = 0.07;
+    cabezaconsombrero.add(sombrero);
+
+    cabezaconsombrero.position.y+=0.03
+
+    var cabezaconsombreroconcuello = new THREE.Object3D();
+
+    var cuello = this.createCuello();
+    cuello.position.y += 0.03/2;
+
+    cabezaconsombreroconcuello.add(cabezaconsombrero);
+    cabezaconsombreroconcuello.add(cuello);
+    // cabeza.add(cuello);
+
+    return cabezaconsombreroconcuello;
   }
 
   createCuello() {
@@ -166,10 +180,12 @@ class personaje extends THREE.Object3D {
     const geometryb1 = new THREE.CylinderGeometry( 0.015, 0.015, 0.09, 32 ); 
     const geometryb2 = new THREE.CylinderGeometry( 0.015, 0.015, 0.06, 32 );
     const geometryr = new THREE.SphereGeometry( 0.02, 32, 16 ); 
-    const material2 = new THREE.MeshStandardMaterial( { color: 0x000000 } ); 
-    const material = new THREE.MeshStandardMaterial( {color: 0xffff00} );
+    const material2 = new THREE.MeshStandardMaterial( { color:  0x434b4d} ); 
+    const material = new THREE.MeshStandardMaterial( {color: 0x8a9597, roughness:0.5,  metalness:1} );
+    const material3 = new THREE.MeshStandardMaterial( {color: 0xeccd6a} );
+
     
-    const b2 = new THREE.Mesh( geometryb2, material ); 
+    const b2 = new THREE.Mesh( geometryb2, material3 ); 
     b2.position.y=-(0.06/2);
     const sphere2 = new THREE.Mesh( geometryr, material2 );
 
@@ -177,6 +193,7 @@ class personaje extends THREE.Object3D {
     brazobajo.add(b2);
     brazobajo.add(sphere2);
     brazobajo.position.y=-0.09;
+    brazobajo.rotation.x=-90/180*Math.PI
 
 
     const b1 = new THREE.Mesh( geometryb1, material ); 
@@ -201,14 +218,14 @@ class personaje extends THREE.Object3D {
     shape.moveTo(0.00001, -0.04);
     shape.lineTo(0.01, -0.04);
     shape.quadraticCurveTo(0.025, -0.025, 0.025, 0);
-    shape.lineTo(0.0255, 0.04);
+    shape.lineTo(0.0255, 0.02);
+    // shape.lineTo(0.0255, 0.04);
     shape.lineTo(0.00001, 0.04);
     shape.lineTo(0.00001, -0.04);
 
     var points = shape.extractPoints().shape;
     const geometry=new THREE.LatheGeometry(points);
-    // const material = new THREE.MeshStandardMaterial( { color: 0xf5f5f5, side:THREE.DoubleSide, flatShading:false} );
-    const material = new THREE.MeshStandardMaterial({ color: 0xffff00 }); 
+    const material = new THREE.MeshStandardMaterial({ color: 0x332f2c }); 
 
     const mesh = new THREE.Mesh( geometry, material ) ;
     return mesh;
@@ -217,8 +234,8 @@ class personaje extends THREE.Object3D {
 
   createPiernaInf() {
     const geometryr = new THREE.SphereGeometry(0.02, 32, 16); 
-    const material = new THREE.MeshStandardMaterial({ color: 0x000000 });
-    const material2 = new THREE.MeshStandardMaterial({ color: 0xffff00 });
+    const material = new THREE.MeshStandardMaterial({ color: 0x332f2c });
+    const material2 = new THREE.MeshStandardMaterial({ color: 0x78451a });
 
     var rodilla = new THREE.Mesh(geometryr, material);
     // rodilla.position.y = -(0.3);
@@ -245,7 +262,7 @@ class personaje extends THREE.Object3D {
 
   createTronco() {
     const geometrytr = new THREE.CylinderGeometry(0.04, 0.07, 0.15, 32);
-    const material = new THREE.MeshStandardMaterial({ color: 0xffff00 }); 
+    const material = new THREE.MeshStandardMaterial({ color: 0x8a9597, roughness:0.5,  metalness:1 }); 
     var tronco = new THREE.Mesh(geometrytr, material);
 
     return tronco;
@@ -272,6 +289,8 @@ class personaje extends THREE.Object3D {
   variablesEfectos(){
     this.movimientopierna = true;
     this.rotacionpierna=0;
+    this.rotacionrodilla=0;
+    this.rotacioncabeza=0;
     this.avance=0.0005;
     this.contadorlento=0;
     this.empiezalento = false;
@@ -294,13 +313,46 @@ class personaje extends THREE.Object3D {
   }
 
   animacion(){
-    if(this.movimientopierna)this.rotacionpierna+=2;
+    if(this.movimientopierna && this.contadorlento>0) this.rotacionpierna+=1;
+    else if(!this.movimientopierna && this.contadorlento>0)this.rotacionpierna-=1;
+    else if(this.movimientopierna) this.rotacionpierna+=2;
     else this.rotacionpierna-=2;
-    if(this.rotacionpierna>40) this.movimientopierna=false;
-    if(this.rotacionpierna<-40) this.movimientopierna=true;
+
+
+    if(this.rotacionpierna>30) this.movimientopierna=false;
+    else if(this.rotacionpierna<-30) this.movimientopierna=true;
+
+    if(this.contadorlento>0){
+      if(this.rotacionpierna==0) this.rotacionrodilla=0;
+      else if(this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla+=2;
+      else if(!this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla-=2;
+      else if(this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla-=2;
+      else if(!this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla+=2;
+    }
+    else{
+      if(this.rotacionpierna==0) this.rotacionrodilla=0;
+      else if(this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla+=4;
+      else if(!this.movimientopierna && this.rotacionpierna>0) this.rotacionrodilla-=4;
+      else if(this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla-=4;
+      else if(!this.movimientopierna && this.rotacionpierna<0) this.rotacionrodilla+=4;
+    }
+    
+
 
     this.piernaIzquierda.rotation.x=this.rotacionpierna/180*Math.PI;
     this.piernaDerecha.rotation.x=this.rotacionpierna/180*Math.PI*-1;
+
+    this.brazo1.rotation.x=this.rotacionpierna/180*Math.PI;
+    this.brazo2.rotation.x=this.rotacionpierna/180*Math.PI*-1;
+
+    this.piernaIzqInf.rotation.x=this.rotacionrodilla/180*Math.PI;
+    this.piernaDerInf.rotation.x=this.rotacionrodilla/180*Math.PI;
+
+    this.rotacioncabeza=this.rotacionpierna*0.2;
+
+    this.cabeza.rotation.z=this.rotacioncabeza/180*Math.PI;
+
+
   }
   
   update () {
