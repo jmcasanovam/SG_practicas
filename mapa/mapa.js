@@ -9,6 +9,7 @@ class mapa extends THREE.Object3D {
     const path = this.getPathFromTorusKnot(geometryT);
     this.geometry = new THREE.TubeGeometry( path, 200, 0.4, 8, true );
     const material = new THREE.MeshStandardMaterial( { color: 0x0000ff } ); 
+    // const material = this.crearMaterial();
     const mesh = new THREE.Mesh( this.geometry, material );
 
     
@@ -16,6 +17,15 @@ class mapa extends THREE.Object3D {
     this.add( mesh );
   }
 
+  crearMaterial() {
+    var textureLoader = new THREE.TextureLoader();
+    var texture = textureLoader.load('../imgs/cesped2.jpg');
+
+    const material = new THREE.MeshBasicMaterial({ map: texture });
+    return material;
+  }
+
+  
   getGeometry(){
     return this.geometry;
   }
