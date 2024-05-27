@@ -64,22 +64,36 @@ class personaje extends THREE.Object3D {
     personaje.add(brazo2);
     personaje.add(tronco)
 
+    this.piernaIzquierda = new THREE.Object3D();
+    this.piernaDerecha = new THREE.Object3D();
 
     var piernaIzq = this.createPiernaSup();
     piernaIzq.position.set(0.025+0.01, -(0.15-0.04), 0);
-    personaje.add(piernaIzq);
+    this.piernaIzquierda.add(piernaIzq);
+    // personaje.add(piernaIzq);
 
     var piernaDer = this.createPiernaSup();
     piernaDer.position.set(-(0.025 + 0.01), -(0.15 - 0.04), 0);
-    personaje.add(piernaDer);
+    this.piernaDerecha.add(piernaDer);
+    // personaje.add(piernaDer);
 
     var rodillaIzq = this.createPiernaInf();
     rodillaIzq.position.set(0.025 + 0.01, -(0.15 - 0.04) - 0.04, 0);
-    personaje.add(rodillaIzq);
+    this.piernaIzquierda.add(rodillaIzq);
+    // personaje.add(rodillaIzq);
 
     var rodillaDer = this.createPiernaInf();
     rodillaDer.position.set(-(0.025 + 0.01), -(0.15 - 0.04) - 0.04, 0);
-    personaje.add(rodillaDer);
+    this.piernaDerecha.add(rodillaDer);
+    // personaje.add(rodillaDer);
+
+
+    this.animacion();
+
+
+    personaje.add(this.piernaIzquierda);
+    personaje.add(this.piernaDerecha);
+
 
     var cabeza = this.cretateCabeza();
     cabeza.position.y = 0.1;
@@ -256,6 +270,8 @@ class personaje extends THREE.Object3D {
   }
 
   variablesEfectos(){
+    this.movimientopierna = true;
+    this.rotacionpierna=0;
     this.avance=0.0005;
     this.contadorlento=0;
     this.empiezalento = false;
@@ -276,8 +292,19 @@ class personaje extends THREE.Object3D {
         break;
     }
   }
+
+  animacion(){
+    if(this.movimientopierna)this.rotacionpierna+=2;
+    else this.rotacionpierna-=2;
+    if(this.rotacionpierna>40) this.movimientopierna=false;
+    if(this.rotacionpierna<-40) this.movimientopierna=true;
+
+    this.piernaIzquierda.rotation.x=this.rotacionpierna/180*Math.PI;
+    this.piernaDerecha.rotation.x=this.rotacionpierna/180*Math.PI*-1;
+  }
   
   update () {
+    this.animacion();
     console.log("Puntuacion: "+this.puntuacion);
     // console.log("Vueltas: "+this.vueltas);
     if(this.lento && !this.empiezalento){
