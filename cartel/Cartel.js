@@ -39,7 +39,14 @@ class Cartel extends THREE.Object3D {
         var cartelShape = this.createCartelShape();
         var options1 = { depth: 0.05, steps: 1, bevelEnabled: false };
         var cartelGeometry = new THREE.ExtrudeGeometry(cartelShape, options1);
-        const material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
+
+        var textureLoader = new THREE.TextureLoader();
+        var texture = textureLoader.load('../imgs/suelo_mojado.png', function (texture) {
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping; // Hace que la textura se repita
+            texture.repeat.set(2, 1.1); // Repite la textura 2 veces en horizontal y 1.1 en vertical
+        
+        });
+        const material = new THREE.MeshStandardMaterial({ color: 0xffff00, map: texture });
         var cartel = new THREE.Mesh(cartelGeometry, material);
         return cartel;
     }
@@ -54,8 +61,8 @@ class Cartel extends THREE.Object3D {
         //Se crea el contorno exterior
         shape.moveTo(x, y);
         shape.lineTo(anchura * 0.2, y);
-        shape.lineTo(anchura * 0.2, altura * 0.2);
-        shape.lineTo(anchura * 0.8, altura * 0.2);
+        shape.lineTo(anchura * 0.2, altura * 0.1);
+        shape.lineTo(anchura * 0.8, altura * 0.1);
         shape.lineTo(anchura * 0.8, y);
         shape.lineTo(anchura, y);
         shape.lineTo(anchura, altura);
