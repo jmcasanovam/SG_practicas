@@ -8,7 +8,7 @@ class Botella extends THREE.Object3D {
     }
 
     crearBotella() {
-        const y = 0, x = 0.0001;    //declaro 2 variables, la y no puede ser 0 en revolucion
+        const y = 0, x = 0.0001;
 
         //Haces la forma del perfil
         const botella = new THREE.Shape();
