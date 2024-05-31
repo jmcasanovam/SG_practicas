@@ -3,7 +3,6 @@
 // import * as THREE from "three"
 
 import * as THREE from '../libs/three.module.js'
-import { GUI } from '../libs/dat.gui.module.js'
 import { TrackballControls } from '../libs/TrackballControls.js'
 
 // Clases de mi proyecto
@@ -21,14 +20,12 @@ class MyScene extends THREE.Scene {
   // la visualización de la escena
   constructor (myCanvas) { 
     super();
+
+    this.laps=0;
+    this.score=0;
+
+     this.renderer = this.createRenderer(myCanvas);
     
-    // Lo primero, crear el visualizador, pasándole el lienzo sobre el que realizar los renderizados.
-    this.renderer = this.createRenderer(myCanvas);
-    
-    // Se crea la interfaz gráfica de usuario
-    this.gui = this.createGUI ();
-    
-    // Construimos los distinos elementos que tendremos en la escena
     
     // Todo elemento que se desee sea tenido en cuenta en el renderizado de la escena debe pertenecer a esta. Bien como hijo de la escena (this en esta clase) o como hijo de un elemento que ya esté en la escena.
     // Tras crear cada elemento se añadirá a la escena con   this.add(variable)
@@ -37,19 +34,9 @@ class MyScene extends THREE.Scene {
     // Tendremos una cámara con un control de movimiento con el ratón
     this.createCamera ();
     
-    // Un suelo 
-    // this.createGround ();
-    
-    // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
-    // Todas las unidades están en metros
-    this.axis = new THREE.AxesHelper (0.1);
-    this.add (this.axis);
     this.camaraGeneral = false;
     
-    // Por último creamos el modelo.
-    // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
-    // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
-    this.model = new Juego(this.gui, "Controles de Juego");
+    this.model = new Juego();
     this.add(this.model);
 
     // this.model.setPointLight(this.pointLight);
@@ -57,6 +44,20 @@ class MyScene extends THREE.Scene {
 
     this.handleKeyBoardEvents();
   }
+
+  updateHUD() {
+    if(this.laps>3){
+      document.getElementById('laps').innerText = `HAS TERMINADO`;
+    }
+    else document.getElementById('laps').innerText = `VUELTA ${this.laps}/3`;
+    document.getElementById('score').innerText = `Puntuación: ${this.score}`;
+  }
+
+  setGameStats() {
+    this.laps = this.model.persona.getVueltas();
+    this.score = this.model.persona.getPuntuacion();
+    this.updateHUD();
+}
 
   handleKeyBoardEvents() {
     document.addEventListener('keydown', (event) =>{
@@ -200,47 +201,12 @@ class MyScene extends THREE.Scene {
     this.add (ground);
   }
   
-  createGUI () {
-    // Se crea la interfaz gráfica de usuario
-    var gui = new GUI();
-    
-    // La escena le va a añadir sus propios controles. 
-    // Se definen mediante un objeto de control
-    // En este caso la intensidad de la luz y si se muestran o no los ejes
-    this.guiControls = {
-      // En el contexto de una función   this   alude a la función
-      lightPower : 100.0,  // La potencia de esta fuente de luz se mide en lúmenes
-      ambientIntensity : 0.35,
-      axisOnOff : true
-    }
-
-    // Se crea una sección para los controles de esta clase
-    var folder = gui.addFolder ('Luz y Ejes');
-    
-    // Se le añade un control para la potencia de la luz puntual
-    folder.add (this.guiControls, 'lightPower', 0, 200, 10)
-      .name('Luz puntual : ')
-      .onChange ( (value) => this.setLightPower(value) );
-    
-    // Otro para la intensidad de la luz ambiental
-    folder.add (this.guiControls, 'ambientIntensity', 0, 1, 0.05)
-      .name('Luz ambiental: ')
-      .onChange ( (value) => this.setAmbientIntensity(value) );
-      
-    // Y otro para mostrar u ocultar los ejes
-    folder.add (this.guiControls, 'axisOnOff')
-      .name ('Mostrar ejes : ')
-      .onChange ( (value) => this.setAxisVisible (value) );
-    
-    return gui;
-  }
-  
   createLights () {
     // Se crea una luz ambiental, evita que se vean complentamente negras las zonas donde no incide de manera directa una fuente de luz
     // La luz ambiental solo tiene un color y una intensidad
     // Se declara como   var   y va a ser una variable local a este método
     //    se hace así puesto que no va a ser accedida desde otros métodos
-    this.ambientLight = new THREE.AmbientLight('white', this.guiControls.ambientIntensity);
+    this.ambientLight = new THREE.AmbientLight('white', 0.35);
     // La añadimos a la escena
     this.add (this.ambientLight);
     
@@ -249,7 +215,7 @@ class MyScene extends THREE.Scene {
     // Si no se le da punto de mira, apuntará al (0,0,0) en coordenadas del mundo
     // En este caso se declara como   this.atributo   para que sea un atributo accesible desde otros métodos.
     this.pointLight = new THREE.SpotLight( 0xffffff );
-    this.pointLight.power = this.guiControls.lightPower;
+    this.pointLight.power = 100;
     this.pointLight.position.set( 2, 7, 1 );
     this.add (this.pointLight);
   }
@@ -315,6 +281,8 @@ class MyScene extends THREE.Scene {
 
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
+    
+    this.setGameStats();
     
     // Se actualiza el resto del modelo
     this.model.update();

@@ -45,6 +45,14 @@ class personaje extends THREE.Object3D {
     return this.camara;
   }
 
+  getPuntuacion(){
+    return this.puntuacion;
+  }
+
+  getVueltas(){
+    return this.vueltas+1;
+  }
+
   crearMateriales(){
     var textureLoader = new THREE.TextureLoader();
     var texture = textureLoader.load('../imgs/armadura.jpg');

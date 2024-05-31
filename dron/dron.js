@@ -16,7 +16,7 @@ class dron extends THREE.Object3D {
 
     this.dron = this.createDron();
 
-    this.dron.position.y+=this.radio+0.4;
+    this.dron.position.y+=this.radio+0.45;
 
     this.superficie = new THREE.Object3D();
     this.superficie.add(this.dron);
