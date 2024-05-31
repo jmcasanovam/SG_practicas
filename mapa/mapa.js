@@ -26,7 +26,7 @@ class mapa extends THREE.Object3D {
       map: texture,
       normalMap: normalMap,
       normalScale: new THREE.Vector2(1, 1) // Ajusta este valor para cambiar la intensidad del relieve
-  });
+    });
   
     return material;
   }

@@ -37,13 +37,6 @@ class MyScene extends THREE.Scene {
     // Tendremos una cámara con un control de movimiento con el ratón
     this.createCamera ();
     
-    // Un suelo 
-    // this.createGround ();
-    
-    // Y unos ejes. Imprescindibles para orientarnos sobre dónde están las cosas
-    // Todas las unidades están en metros
-    this.axis = new THREE.AxesHelper (0.1);
-    this.add (this.axis);
     
     
     // Por último creamos el modelo.

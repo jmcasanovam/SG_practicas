@@ -35,6 +35,7 @@ class personaje extends THREE.Object3D {
     var segmentoActual=Math.floor(this.t * this.segmentos);
     this.nodofinal.up=this.tubo.binormals[segmentoActual];
     this.nodofinal.lookAt(posTmp);
+    this.nodofinal.rotation.z = this.r;
 
     this.add(this.nodofinal);
   }
@@ -44,8 +45,29 @@ class personaje extends THREE.Object3D {
     return this.camara;
   }
 
+  crearMateriales(){
+    var textureLoader = new THREE.TextureLoader();
+    var texture = textureLoader.load('../imgs/armadura.jpg');
+    var normalMap = textureLoader.load('../imgs/armadura_normal.png');
+
+    this.materialarmadura = new THREE.MeshStandardMaterial({ 
+      map: texture,
+      normalMap: normalMap,
+      normalScale: new THREE.Vector2(1, 1) // Ajusta este valor para cambiar la intensidad del relieve
+    });
+
+    this.materialArticulacion = new THREE.MeshStandardMaterial({ color: 0x434b4d });
+    this.materialPierna = new THREE.MeshStandardMaterial({ color: 0x78451a });
+    this.materialpiel = new THREE.MeshStandardMaterial( {color: 0xeccd6a} );
+    this.materialsombrero = new THREE.MeshStandardMaterial({ color: 0x000000 });
+    this.materialpelo = new THREE.MeshStandardMaterial({ color: 0xffffff });
+    this.materialojos = new THREE.MeshStandardMaterial({ color: 0x006400 });
+
+  }
+
 
   createPersonaje() {
+    this.crearMateriales();
     var personaje = new THREE.Object3D();
 
     this.brazo1 = this.createBrazo();
@@ -92,13 +114,8 @@ class personaje extends THREE.Object3D {
     this.cabezon.add(this.cabeza);
     this.cabezon.position.y = 0.07;
 
+    personaje.add(this.cabezon);
 
-    // this.cabezon.add(this.cabeza);
-
-     personaje.add(this.cabezon);
-
-    // personaje.add(this.cabeza);
-    
 
     this.camara = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 20);
     personaje.add(this.camara);
@@ -122,18 +139,27 @@ class personaje extends THREE.Object3D {
     shape.lineTo(0.001, 0.07);
     shape.lineTo(0.001, 0);
     
+    
 
     var points = shape.extractPoints().shape;
     const geometry = new THREE.LatheGeometry(points);
-    const material = new THREE.MeshStandardMaterial({ color: 0xeccd6a });
-    const cabeza = new THREE.Mesh(geometry, material);
+    const cabeza = new THREE.Mesh(geometry, this.materialpiel);
 
     var cabezaconsombrero = new THREE.Object3D();
     cabezaconsombrero.add(cabeza);
 
+    var pelo=this.createPelo();
+    var bigote=this.createBigote();
+
     var sombrero = this.createSombrero();
     sombrero.position.y = 0.07;
     cabezaconsombrero.add(sombrero);
+    cabezaconsombrero.add(this.createPelo());
+    cabezaconsombrero.add(this.createBigote());
+    cabezaconsombrero.add(this.createPerilla());
+    cabezaconsombrero.add(this.createOjos());
+
+
 
     cabezaconsombrero.position.y+=0.03
 
@@ -144,15 +170,118 @@ class personaje extends THREE.Object3D {
 
     cabezaconsombreroconcuello.add(cabezaconsombrero);
     cabezaconsombreroconcuello.add(cuello);
-    // cabeza.add(cuello);
+    // cabezaconsombreroconcuello.add(pelo);
+
 
     return cabezaconsombreroconcuello;
   }
 
+  createPelo(){
+    var formapelo = new THREE.Shape();
+    formapelo.moveTo(-0.040, 0.055);
+    formapelo.quadraticCurveTo(-0.030, 0.01, -0.02, 0);
+    formapelo.lineTo(-0.015, 0.02);
+    formapelo.lineTo(-0.010, 0);
+    formapelo.lineTo(-0.005, 0.02);
+    formapelo.lineTo(0.000, 0);
+    formapelo.lineTo(0.005, 0.02);
+    formapelo.lineTo(0.010, 0);
+    formapelo.lineTo(0.015, 0.02);
+    formapelo.lineTo(0.020, 0);
+    formapelo.quadraticCurveTo(0.030, 0.01, 0.040, 0.055);
+    formapelo.lineTo(-0.040, 0.055);
+    var opciones = {
+      depth: 0.01,
+      steps:1,
+      bevelEnabled: false,
+    };
+
+    var geometria = new THREE.ExtrudeGeometry(formapelo, opciones);
+
+    var pelo = new THREE.Mesh(geometria, this.materialpelo);
+    pelo.position.z =-0.04-0.005;
+    pelo.position.y =0.07-0.055-0.0001; //La altura de la cabeza menos la del pelo, para que esté arriba
+
+
+    return pelo
+  }
+
+  createBigote(){
+    var formabigote= new THREE.Shape();
+    formabigote.moveTo(0, 0.0112);
+    formabigote.lineTo(0.007, 0.014);
+    formabigote.quadraticCurveTo(0.0175, 0.0028, 0.028, 0.014);
+    formabigote.quadraticCurveTo(0.0252, 0, 0.0014, 0.0028);
+    formabigote.lineTo(-0.0014, 0.0028);
+    formabigote.quadraticCurveTo(-0.0252, 0, -0.028, 0.014);
+    formabigote.quadraticCurveTo(-0.0175, 0.0028, -0.007, 0.014);
+    formabigote.lineTo(0, 0.0112);
+
+    var opciones = {
+      depth: 0.01,
+      steps:1,
+      bevelEnabled: false,
+    };
+
+    var geometria = new THREE.ExtrudeGeometry(formabigote, opciones);
+    var bigote = new THREE.Mesh(geometria, this.materialpelo);
+
+    bigote.position.z=0.037;
+    bigote.position.y=0.03;
+
+
+    return bigote;
+  }
+
+  createPerilla(){
+    var formaperilla= new THREE.Shape();
+    formaperilla.moveTo(0.0175, 0);
+    formaperilla.lineTo(0, -0.052);
+    formaperilla.lineTo(-0.0175, 0);
+    formaperilla.lineTo(0.0175, 0);
+
+    var opciones = {
+      depth: 0.01,
+      steps:1,
+      bevelEnabled: false,
+    };
+
+    var geometria = new THREE.ExtrudeGeometry(formaperilla, opciones);
+    var perilla = new THREE.Mesh(geometria, this.materialpelo);
+
+    perilla.position.z=0.032;
+    perilla.position.y=0.028;
+
+
+    return perilla;
+  }
+
+  createOjos(){
+    const geometria = new THREE.CircleGeometry( 0.012 ); 
+    const ojoizq = new THREE.Mesh( geometria, this.materialojos );
+    const ojoder = new THREE.Mesh( geometria, this.materialojos );
+    ojoizq.position.y+=0.01;
+    ojoizq.position.x+=-0.013;
+
+    ojoder.position.y+=0.01;
+    ojoder.position.x+=0.013;
+
+    var ojos=new THREE.Object3D();
+    ojos.add(ojoizq);
+    ojos.add(ojoder);
+
+    ojos.scale.y=0.7;
+
+    ojos.position.y=0.047;
+    ojos.position.z=0.043;
+
+    
+    return ojos
+  }
+
   createCuello() {
     const geometry = new THREE.CylinderGeometry(0.015, 0.015, 0.03, 32);
-    const material = new THREE.MeshStandardMaterial({ color: 0x000000 });
-    const cuello = new THREE.Mesh(geometry, material);
+    const cuello = new THREE.Mesh(geometry, this.materialpiel);
 
     return cuello;
   }
@@ -170,8 +299,7 @@ class personaje extends THREE.Object3D {
 
     var points = shape.extractPoints().shape;
     const geometry = new THREE.LatheGeometry(points);
-    const material = new THREE.MeshStandardMaterial({ color: 0x000000 });
-    const sombrero = new THREE.Mesh(geometry, material);
+    const sombrero = new THREE.Mesh(geometry, this.materialsombrero);
 
     return sombrero;
   }
@@ -180,14 +308,11 @@ class personaje extends THREE.Object3D {
     const geometryb1 = new THREE.CylinderGeometry( 0.015, 0.015, 0.09, 32 ); 
     const geometryb2 = new THREE.CylinderGeometry( 0.015, 0.015, 0.06, 32 );
     const geometryr = new THREE.SphereGeometry( 0.02, 32, 16 ); 
-    const material2 = new THREE.MeshStandardMaterial( { color:  0x434b4d} ); 
-    const material = new THREE.MeshStandardMaterial( {color: 0x8a9597, roughness:0.5,  metalness:1} );
-    const material3 = new THREE.MeshStandardMaterial( {color: 0xeccd6a} );
 
     
-    const b2 = new THREE.Mesh( geometryb2, material3 ); 
+    const b2 = new THREE.Mesh( geometryb2, this.materialpiel ); 
     b2.position.y=-(0.06/2);
-    const sphere2 = new THREE.Mesh( geometryr, material2 );
+    const sphere2 = new THREE.Mesh( geometryr, this.materialArticulacion );
 
     var brazobajo=new THREE.Object3D();
     brazobajo.add(b2);
@@ -196,8 +321,8 @@ class personaje extends THREE.Object3D {
     brazobajo.rotation.x=-90/180*Math.PI
 
 
-    const b1 = new THREE.Mesh( geometryb1, material ); 
-    const sphere = new THREE.Mesh( geometryr, material2 );
+    const b1 = new THREE.Mesh( geometryb1, this.materialarmadura ); 
+    const sphere = new THREE.Mesh( geometryr, this.materialArticulacion );
     b1.position.y=-(0.09/2);
 
     var brazoalto=new THREE.Object3D();
@@ -219,51 +344,42 @@ class personaje extends THREE.Object3D {
     shape.lineTo(0.01, -0.04);
     shape.quadraticCurveTo(0.025, -0.025, 0.025, 0);
     shape.lineTo(0.0255, 0.02);
-    // shape.lineTo(0.0255, 0.04);
     shape.lineTo(0.00001, 0.04);
     shape.lineTo(0.00001, -0.04);
 
     var points = shape.extractPoints().shape;
     const geometry=new THREE.LatheGeometry(points);
-    const material = new THREE.MeshStandardMaterial({ color: 0x332f2c }); 
 
-    const mesh = new THREE.Mesh( geometry, material ) ;
+    const mesh = new THREE.Mesh( geometry, this.materialarmadura ) ;
     return mesh;
 
   }
 
   createPiernaInf() {
     const geometryr = new THREE.SphereGeometry(0.02, 32, 16); 
-    const material = new THREE.MeshStandardMaterial({ color: 0x332f2c });
-    const material2 = new THREE.MeshStandardMaterial({ color: 0x78451a });
-
-    var rodilla = new THREE.Mesh(geometryr, material);
-    // rodilla.position.y = -(0.3);
-
     const geometry_pierna = new THREE.CylinderGeometry(0.015, 0.015, 0.06, 32);
+  
+    var rodilla = new THREE.Mesh(geometryr, this.materialArticulacion);
     
-    var espinilla = new THREE.Mesh(geometry_pierna, material2);
+    var espinilla = new THREE.Mesh(geometry_pierna, this.materialPierna);
     espinilla.position.y = -(0.03);
 
     var pierna = new THREE.Object3D();
     pierna.add(rodilla);
     pierna.add(espinilla);
 
-    var pie = new THREE.Mesh(geometryr, material);
+    var pie = new THREE.Mesh(geometryr, this.materialArticulacion);
     pie.position.y = -(0.06);
 
     pierna.add(pie);
-
-
-
 
     return pierna;
   }
 
   createTronco() {
     const geometrytr = new THREE.CylinderGeometry(0.04, 0.07, 0.15, 32);
-    const material = new THREE.MeshStandardMaterial({ color: 0x8a9597, roughness:0.5,  metalness:1 }); 
-    var tronco = new THREE.Mesh(geometrytr, material);
+    
+    var tronco = new THREE.Mesh(geometrytr, this.materialarmadura);
 
     return tronco;
   }
@@ -341,51 +457,49 @@ class personaje extends THREE.Object3D {
   }
   
   update () {
-    this.animacion();
-    console.log("Puntuacion: "+this.puntuacion);
-    // console.log("Vueltas: "+this.vueltas);
-    if(this.lento && !this.empiezalento){
-      this.contadorlento=200;
-      this.empiezalento=true;
+    if(this.vueltas<3){
+      this.animacion();
+      console.log("Puntuacion: "+this.puntuacion);
+      // console.log("Vueltas: "+this.vueltas);
+      if(this.lento && !this.empiezalento){
+        this.contadorlento=200;
+        this.empiezalento=true;
+      }
+
+      if (this.lento && this.contadorlento!=0) {
+        this.avance =0.00015;
+        this.contadorlento= this.contadorlento-1;
+      }
+      else {
+        this.avance=0.0006;
+        this.lento = false;
+        this.empiezalento=false;
+
+      }
+
+      this.t=(this.t+this.avance);
+      if (this.t >= 1) {
+        this.vueltas++;
+        this.t = this.t % 1;
+      }
+
+      var posTmp=this.path.getPointAt(this.t);
+
+      this.nodofinal.position.copy (posTmp);
+
+      var tangente= this.path.getTangentAt(this.t);
+      posTmp.add(tangente);
+      var segmentoActual=Math.floor(this.t * this.segmentos);
+      this.nodofinal.up=this.tubo.binormals[segmentoActual];
+      this.nodofinal.lookAt(posTmp);
+
+      if (this.rotarD) {
+        this.r += 0.1;
+      }else if (this.rotarI) {
+        this.r -= 0.1;
+      }
+      this.nodofinal.rotation.z = this.r; 
     }
-
-    if (this.lento && this.contadorlento!=0) {
-      this.avance =0.00015;
-      this.contadorlento= this.contadorlento-1;
-    }
-    else {
-      this.avance=0.0006;
-      this.lento = false;
-      this.empiezalento=false;
-
-    }
-    
-    if (this.vueltas == 3) {
-      this.avance = 0;
-    }
-
-    this.t=(this.t+this.avance);
-    if (this.t >= 1) {
-      this.vueltas++;
-      this.t = this.t % 1;
-    }
-
-    var posTmp=this.path.getPointAt(this.t);
-
-    this.nodofinal.position.copy (posTmp);
-
-    var tangente= this.path.getTangentAt(this.t);
-    posTmp.add(tangente);
-    var segmentoActual=Math.floor(this.t * this.segmentos);
-    this.nodofinal.up=this.tubo.binormals[segmentoActual];
-    this.nodofinal.lookAt(posTmp);
-
-    if (this.rotarD) {
-      this.r += 0.1;
-    }else if (this.rotarI) {
-      this.r -= 0.1;
-    }
-    this.nodofinal.rotation.z = this.r;
   }
 }
 

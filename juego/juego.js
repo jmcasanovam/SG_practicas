@@ -12,7 +12,7 @@ import { Esfera } from '../esfera/Esfera.js';
 class Juego extends THREE.Object3D {
   constructor() {
     super();
-    this.anima=true;
+    this.anima=false;
 
     this.animados = new Array();
     this.picks = new Array();
