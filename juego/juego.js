@@ -6,6 +6,8 @@ import { mapa } from '../mapa/mapa.js'
 import { jeringuilla } from '../jeringuilla/jeringuilla.js';
 import { CajaGlobos } from '../caja_globos/CajaGlobos.js';
 import { Esfera } from '../esfera/Esfera.js';
+import { Meta } from '../meta/Meta.js';
+
 
 
 
@@ -21,6 +23,7 @@ class Juego extends THREE.Object3D {
 
     var mapam = new mapa();
     this.persona = new personaje(mapam.getGeometry());
+    this.meta= new Meta(mapam.getGeometry());
     this.dron0 = new dron(mapam.getGeometry(), 0.2, "0");
     this.dron1 = new dron(mapam.getGeometry(), 0.3, "1");
     this.dron2 = new dron(mapam.getGeometry(), 0.4, "2");
@@ -85,6 +88,7 @@ class Juego extends THREE.Object3D {
     
     this.add(this.persona);
     this.add(mapam);
+    this.add(this.meta);
 
     this.esfera = new Esfera();
     this.add(this.esfera);

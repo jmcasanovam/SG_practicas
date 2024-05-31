@@ -156,9 +156,6 @@ class personaje extends THREE.Object3D {
     var cabezaconsombrero = new THREE.Object3D();
     cabezaconsombrero.add(cabeza);
 
-    var pelo=this.createPelo();
-    var bigote=this.createBigote();
-
     var sombrero = this.createSombrero();
     sombrero.position.y = 0.07;
     cabezaconsombrero.add(sombrero);
