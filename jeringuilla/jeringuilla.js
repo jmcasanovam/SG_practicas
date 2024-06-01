@@ -4,6 +4,7 @@ import * as THREE from 'three'
 class jeringuilla extends THREE.Object3D {
   constructor(geometria, punto, rotado) {
     super();
+    console.log("Desde la jeringa, punto:"+punto);
     this.rotar=0;
 
     this.tubo=geometria;

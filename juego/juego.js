@@ -18,6 +18,7 @@ class Juego extends THREE.Object3D {
 
     this.animados = new Array();
     this.picks = new Array();
+    this.objetosColisiones = new Array();
 
     
 
@@ -53,28 +54,17 @@ class Juego extends THREE.Object3D {
     this.animados.push(this.dron4);
     this.animados.push(this.dron5);
 
-    this.jeringa= new jeringuilla(mapam.getGeometry(), 0.01, 10);
-    this.jeringa2 = new jeringuilla(mapam.getGeometry(), 0.2, 30);
-    this.jeringa3 = new jeringuilla(mapam.getGeometry(), 0.3, 50);
-    this.jeringa4 = new jeringuilla(mapam.getGeometry(), 0.4, 70);
-    this.jeringa5 = new jeringuilla(mapam.getGeometry(), 0.5, 120);
-    this.jeringa6 = new jeringuilla(mapam.getGeometry(), 0.6, 150);
+    for(let i=0; i<6; i++){  //crear jeringuillas
+      var numero=Math.random();
+      console.log("Random:"+numero);
+      const jeringa= new jeringuilla(mapam.getGeometry(), numero, Math.random()*180);
+      this.animados.push(jeringa);
+      this.objetosColisiones.push(jeringa);
+    }
 
-    this.animados.push(this.jeringa);
-    this.animados.push(this.jeringa2);
-    this.animados.push(this.jeringa3);
-    this.animados.push(this.jeringa4);
-    this.animados.push(this.jeringa5);
-    this.animados.push(this.jeringa6);
+
     this.crearCajasColisiones();
 
-    this.objetosColisiones = new Array();
-    this.objetosColisiones.push(this.jeringa);
-    this.objetosColisiones.push(this.jeringa2);
-    this.objetosColisiones.push(this.jeringa3);
-    this.objetosColisiones.push(this.jeringa4);
-    this.objetosColisiones.push(this.jeringa5);
-    this.objetosColisiones.push(this.jeringa6);
 
     this.animados.push(this.persona);
 
@@ -104,32 +94,16 @@ class Juego extends THREE.Object3D {
   }
 
   crearCajasColisiones() {
-    var cajaFigura1 = new THREE.Box3();
-    var cajaFigura2 = new THREE.Box3();
-    var cajaFigura3 = new THREE.Box3();
-    var cajaFigura4 = new THREE.Box3();
-    var cajaFigura5 = new THREE.Box3();
-    var cajaFigura6 = new THREE.Box3();
     this.cajaPersona = new THREE.Box3();
 
     this.cajaPersona.setFromObject(this.persona);
 
-    
-    cajaFigura1.setFromObject(this.jeringa);
-    cajaFigura2.setFromObject(this.jeringa2);
-    cajaFigura3.setFromObject(this.jeringa3);
-    cajaFigura4.setFromObject(this.jeringa4);
-    cajaFigura5.setFromObject(this.jeringa5);
-    cajaFigura6.setFromObject(this.jeringa6);
-
     this.cajasColisiones = new Array();
-    this.cajasColisiones.push(cajaFigura1);
-    this.cajasColisiones.push(cajaFigura2);
-    this.cajasColisiones.push(cajaFigura3); 
-    this.cajasColisiones.push(cajaFigura4);
-    this.cajasColisiones.push(cajaFigura5);
-    this.cajasColisiones.push(cajaFigura6);
-
+    for(let i=0; i<this.objetosColisiones.length; i++){
+      var cajaFigura1 = new THREE.Box3();
+      cajaFigura1.setFromObject(this.objetosColisiones[i]);
+      this.cajasColisiones.push(cajaFigura1)
+    }
   }
 
   pickeado(n) {
