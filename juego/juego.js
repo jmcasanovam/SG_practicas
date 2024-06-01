@@ -53,12 +53,12 @@ class Juego extends THREE.Object3D {
     this.animados.push(this.dron4);
     this.animados.push(this.dron5);
 
-    this.jeringa= new jeringuilla(mapam.getGeometry(), 0.1);
-    this.jeringa2 = new jeringuilla(mapam.getGeometry(), 0.2);
-    this.jeringa3 = new jeringuilla(mapam.getGeometry(), 0.3);
-    this.jeringa4 = new jeringuilla(mapam.getGeometry(), 0.4);
-    this.jeringa5 = new jeringuilla(mapam.getGeometry(), 0.5);
-    this.jeringa6 = new jeringuilla(mapam.getGeometry(), 0.6);
+    this.jeringa= new jeringuilla(mapam.getGeometry(), 0.01, 10);
+    this.jeringa2 = new jeringuilla(mapam.getGeometry(), 0.2, 30);
+    this.jeringa3 = new jeringuilla(mapam.getGeometry(), 0.3, 50);
+    this.jeringa4 = new jeringuilla(mapam.getGeometry(), 0.4, 70);
+    this.jeringa5 = new jeringuilla(mapam.getGeometry(), 0.5, 120);
+    this.jeringa6 = new jeringuilla(mapam.getGeometry(), 0.6, 150);
 
     this.animados.push(this.jeringa);
     this.animados.push(this.jeringa2);
@@ -154,7 +154,7 @@ class Juego extends THREE.Object3D {
       if(this.cajaPersona.intersectsBox(this.cajasColisiones[i])){
         this.contador += 1;
         var objetoColisionado = this.objetosColisiones[i];
-        this.persona.efecto(objetoColisionado.efecto());
+        this.persona.efecto(objetoColisionado.efecto(), this.ambientLight, this.pointLight);
         this.cajasColisiones.splice(i, 1);
         this.remove(this.objetosColisiones[i]);
         this.objetosColisiones.splice(i, 1);
@@ -171,7 +171,7 @@ class Juego extends THREE.Object3D {
           // this.pointLight.color.set(0xFFFFFF);
           // this.pointLight.intensity = 1;
 
-          objetoColisionado.efectoLuces(this.ambientLight, this.pointLight);
+          // objetoColisionado.efectoLuces(this.ambientLight, this.pointLight);
         }
       }
     }

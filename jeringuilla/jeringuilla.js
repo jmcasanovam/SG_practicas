@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 
 class jeringuilla extends THREE.Object3D {
-  constructor(geometria, punto) {
+  constructor(geometria, punto, rotado) {
     super();
     this.rotar=0;
 
@@ -11,7 +11,7 @@ class jeringuilla extends THREE.Object3D {
     this.radio=geometria.parameters.radius;
     this.segmentos=geometria.parameters.tubularSegments;
     this.t=punto;
-    this.r=0;
+    this.r=rotado*Math.PI/180;
 
 
     this.jeringa = this.createJeringuilla();

@@ -11,11 +11,11 @@ class personaje extends THREE.Object3D {
     this.t=0;
     this.r=0;
 
-    var persona = this.createPersonaje();
-    persona.position.y+=this.radio+0.21;
+    this.persona = this.createPersonaje();
+    this.persona.position.y+=this.radio+0.21;
 
     var superficie = new THREE.Object3D();
-    superficie.add(persona);
+    superficie.add(this.persona);
 
     superficie.rotation.z=this.r;
     var movlateral = new THREE.Object3D();
@@ -129,6 +129,8 @@ class personaje extends THREE.Object3D {
 
     this.camara.position.set(0, 0.5, -1.3);
     this.camara.lookAt(0,0.1,0);
+
+
 
     this.animacion();
 
@@ -406,6 +408,77 @@ class personaje extends THREE.Object3D {
     this.rotarD = false;
   }
 
+  crearLuces(){
+    this.luz1 = new THREE.SpotLight( 0xFFD300 );
+    this.luz1.power = 150;
+    this.luz1.position.set( -0.6, 0.1, -0.7 );
+    this.luz1.target= this.persona;
+
+    this.luz2 = new THREE.SpotLight( 0x7D2181 );
+    this.luz2.power = 150;
+    this.luz2.position.set( 0.6, 0.1, -0.7 );
+    this.luz2.target= this.persona;
+
+    this.persona.add (this.luz1);
+    this.persona.add (this.luz2);
+  }
+
+  actualizarLuces(){
+    if(this.contadorluces==0){
+      this.persona.remove(this.luz1);
+      this.persona.remove(this.luz2);
+      this.lucescreadas=false;
+      this.ambientLight.color.set(0xffffff);
+      this.ambientLight.intensity = 0.35;
+      this.pointLight.color.set(0xFFFFFF);
+      this.pointLight.power = 100;
+    }
+    else if(this.contadorluces<50){
+      this.luz1.color.set(0xFFD300);
+      this.luz2.color.set(0x7D2181);
+    }
+    else if(this.contadorluces<100){
+      this.luz1.color.set(0x4169E1);
+      this.luz2.color.set(0xb32821);
+    }
+    else if(this.contadorluces<150){
+      this.luz1.color.set(0x00913f);
+      this.luz2.color.set(0xFFA500);
+    }
+    else if(this.contadorluces<200){
+      this.luz1.color.set(0xFFD300);
+      this.luz2.color.set(0x7D2181);
+    }
+    else if(this.contadorluces<250){
+      this.luz1.color.set(0x4169E1);
+      this.luz2.color.set(0xb32821);
+    }
+    else if(this.contadorluces<300){
+      this.luz1.color.set(0x00913f);
+      this.luz2.color.set(0xFFA500);
+    }
+    else if(this.contadorluces<350){
+      this.luz1.color.set(0xFFD300);
+      this.luz2.color.set(0x7D2181);
+    }
+    else if(this.contadorluces<400){
+      this.luz1.color.set(0x4169E1);
+      this.luz2.color.set(0xb32821);
+    }
+    else if(this.contadorluces<450){
+      this.luz1.color.set(0x00913f);
+      this.luz2.color.set(0xFFA500);
+    }
+    else{
+      this.ambientLight.color.set(0x000000);
+      this.ambientLight.intensity = 0.1;
+      this.pointLight.color.set(0xFFFFFF);
+      this.pointLight.intensity = 1;
+    }
+  }
+
+
+
   variablesEfectos(){
     this.movimientopierna = true;
     this.rotacionpierna=0;
@@ -414,61 +487,71 @@ class personaje extends THREE.Object3D {
     this.avance=0.0005;
     this.contadorlento=0;
     this.lento=false;
-    this.girorapido=false;
     this.contadorgirorapido=0;
     this.puntuacion=0;
     this.vueltas=0;
-    this.girorandom=false;
     this.contadorgirorandom=0;
+    this.contadorluces=0;
+    this.lucescreadas=false;
   }
 
   resetEfectos(){
     this.avance=0.0005;
     this.contadorlento=0;
-    this.girorapido=false;
     this.lento=false;
     this.contadorgirorapido=0;
-    this.girorandom=false;
     this.contadorgirorandom=0;
+    this.contadorluces=1;
   }
 
-  efecto(n){
+  efecto(n, ambientLight, pointLight){
     console.log("efecto:"+n);
     switch(n){
       case "pastilla":
         this.resetEfectos();
         break;
       case "cartel":
-        this.girorapido=true;
         this.contadorgirorapido=200;
         break;
       case "lentejas":
-        //
+        this.contadorluces=1;
         break;
       case "kebab":
-        //
+        this.contadorgirorandom=0;
         break;
       case "dron":
         this.puntuacion+=100;
         break;
       case "caja globos":
-        //
+        this.resetEfectos();
+        this.puntuacion+=100;
         break;
       case "paloma":
         this.puntuacion+=1000;
         break;
       case "jeringuilla":
-        this.lento=true;
-        this.contadorlento=200;
+        this.contadorluces=500;
+        if(!this.lucescreadas) this.crearLuces();
+        this.lucescreadas=true;
+        this.ambientLight=ambientLight;
+        this.pointLight=pointLight
         break;
       case "pastilla caducada":
         this.contadorlento=this.contadorlento*1.2;
         this.contadorgirorapido=this.contadorgirorapido*1.2;
+        this.contadorgirorandom*=1.2;
+        this.contadorluces*=1.2;
       case "botella":
-        this.girorandom=true;
         this.contadorgirorandom=200;
         break;
-
+      case "tractor":
+        this.lento=true;
+        this.contadorlento=200;
+        this.puntuacion-=100;
+        break;
+      case "molino":
+        this.puntuacion-=200;
+        break;
       default:
         break;
     }
@@ -498,23 +581,33 @@ class personaje extends THREE.Object3D {
     this.rotacioncabeza=this.rotacionpierna*0.2;
 
     this.cabeza.rotation.z=this.rotacioncabeza/180*Math.PI;
-
-
   }
   
   update () {
     if(this.vueltas<3){
       this.animacion();
+      if(this.contadorluces>0){
+        this.contadorluces--;
+        this.actualizarLuces();
+      }
+      if(this.contadorgirorandom>0){
+        this.contadorgirorandom--;
+      }
+      if(this.contadorgirorapido>0){
+        this.contadorgirorapido--;
+      }
+
+
+      //comprobar contadores
+      if(this.contadorlento==0) this.lento=false;
+
 
       //Efecto lento
       if (this.lento && this.contadorlento!=0) { //si tiene el efecto lento disminuimos el avance
         this.avance =0.00015;
         this.contadorlento= this.contadorlento-1;
       }
-      else {
-        this.avance=0.0006; //si ya ha terminado el contador
-        this.lento = false;
-      }
+      else this.avance=0.0006; //si ya ha terminado el contador
 
       //Avance en t y contador de vueltas
       this.t=(this.t+this.avance);
@@ -536,19 +629,13 @@ class personaje extends THREE.Object3D {
       this.giro=0;
       if(this.rotarD){
         this.giro= 0.025;
-        if(this.girorapido) this.giro+= 0.025;
-        if(this.girorandom) {
-          this.giro*=(Math.floor(Math.random() * (3)) + 0.1);
-          this.contadorgirorandom-=1;
-        }
+        if(this.contadorgirorapido>0) this.giro+= 0.025;
+        if(this.contadorgirorandom>0) this.giro*=(Math.floor(Math.random() * (3)) + 0.1);
       }
       else if(this.rotarI){
         this.giro= -0.025;
-        if(this.girorapido) this.giro-= 0.025;
-        if(this.girorandom) {
-          this.giro*=(Math.floor(Math.random() * (3)) + 0.1);
-          this.contadorgirorandom-=1;
-        }
+        if(this.contadorgirorapido>0) this.giro-= 0.025;
+        if(this.contadorgirorandom>0) this.giro*=(Math.floor(Math.random() * (3)) + 0.1);
       }
       this.r+=this.giro;
       this.nodofinal.rotation.z = this.r; 
