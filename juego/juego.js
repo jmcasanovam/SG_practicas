@@ -7,6 +7,12 @@ import { jeringuilla } from '../jeringuilla/jeringuilla.js';
 import { CajaGlobos } from '../caja_globos/CajaGlobos.js';
 import { Esfera } from '../esfera/Esfera.js';
 import { Meta } from '../meta/Meta.js';
+import { Botella } from '../botella/Botella.js';
+import { Cartel } from '../cartel/Cartel.js';
+import { Lentejas } from '../lentejas/Lentejas.js';
+import { Molino } from '../molino/Molino.js';
+import { Pastilla } from '../pastilla/Pastilla.js';
+import { Tractor } from '../tractor/Tractor.js';
 
 
 
@@ -23,7 +29,7 @@ class Juego extends THREE.Object3D {
     
 
     var mapam = new mapa();
-    this.add(mapam);
+    // this.add(mapam);
     this.persona = new personaje(mapam.getGeometry());
     this.animados.push(this.persona);
     this.add(this.persona);
@@ -48,6 +54,47 @@ class Juego extends THREE.Object3D {
       this.animados.push(jeringa);
       this.objetosColisiones.push(jeringa);
     }
+
+    for(let i=0; i<6; i++){  //crear botellas
+      const botella= new Botella(mapam.getGeometry(), Math.random(), Math.random()*180);
+      this.objetosColisiones.push(botella);
+    }
+
+    for(let i=0; i<6; i++){  //crear botellas
+      const objeto= new Cartel(mapam.getGeometry(), Math.random(), Math.random()*180);
+      this.objetosColisiones.push(objeto);
+    }
+
+    for(let i=0; i<6; i++){  //crear lentejas
+      const objeto= new Lentejas(mapam.getGeometry(), Math.random(), Math.random()*180);
+      this.objetosColisiones.push(objeto);
+    }
+
+    for(let i=0; i<4; i++){  //crear molino
+      const objeto= new Molino(mapam.getGeometry(), Math.random(), Math.random()*180);
+      this.objetosColisiones.push(objeto);
+      this.animados.push(objeto);
+    }
+
+    for(let i=0; i<3; i++){  //crear pastillas
+      const objeto= new Pastilla(mapam.getGeometry(), Math.random(), Math.random()*180, true);
+      const objeto2= new Pastilla(mapam.getGeometry(), Math.random(), Math.random()*180, false);
+      this.objetosColisiones.push(objeto);
+      this.objetosColisiones.push(objeto2);
+    }
+
+    for(let i=0; i<2; i++){  //crear pastillas
+      const objeto= new Tractor(mapam.getGeometry(), Math.random(), Math.random()*180);
+      this.objetosColisiones.push(objeto);
+    }
+
+
+
+
+
+
+    const auxiliar = new Tractor(mapam.getGeometry(), 0.01, 180);
+    this.add(auxiliar);
 
 
     this.crearCajasColisiones();

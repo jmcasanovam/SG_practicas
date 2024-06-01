@@ -2,9 +2,45 @@
 import * as THREE from 'three';
 
 class Botella extends THREE.Object3D {
-    constructor() {
-        super();      
-        this.crearBotella();
+    constructor(geometria, punto, rotado) {
+        super();
+
+        this.tubo=geometria;
+        this.path=geometria.parameters.path;
+        this.radio=geometria.parameters.radius;
+        this.segmentos=geometria.parameters.tubularSegments;
+        this.t=punto;
+        this.r=rotado*Math.PI/180;
+
+        this.botella = this.crearBotella();
+
+        this.botella.position.y+=this.radio;
+    
+        this.superficie = new THREE.Object3D();
+        this.superficie.add(this.botella);
+        
+    
+        this.superficie.rotation.z=this.r;
+        var movlateral = new THREE.Object3D();
+        movlateral.add(this.superficie);
+    
+        this.nodofinal = new THREE.Object3D();
+        this.nodofinal.add(movlateral);
+    
+    
+        var posTmp=this.path.getPointAt(this.t);
+    
+    
+        this.nodofinal.position.copy (posTmp);
+    
+        var tangente= this.path.getTangentAt(this.t);
+        posTmp.add(tangente);
+        var segmentoActual=Math.floor(this.t * this.segmentos);
+        this.nodofinal.up=this.tubo.binormals[segmentoActual];
+        this.nodofinal.lookAt(posTmp);
+    
+    
+        this.add(this.nodofinal);
     }
 
     crearBotella() {
@@ -29,10 +65,13 @@ class Botella extends THREE.Object3D {
         //Creo la botella
         this.botellaFinal = new THREE.Mesh(geometria, material);
 
-        this.botellaFinal.position.y -= 0.035;
-        this.add(this.botellaFinal);
-
+        this.botellaFinal.position.y += 0.1;
+        return this.botellaFinal;
         
+    }
+
+    efecto(){
+        return "botella";
     }
 
     

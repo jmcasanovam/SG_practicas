@@ -3,13 +3,46 @@ import * as THREE from 'three'
 import { CSG } from '../libs/CSG-v2.js';
 
 class Cartel extends THREE.Object3D {
-    constructor(gui, titleGui) {
+    constructor(geometria, punto, rotado) {
         super();
 
-        this.createGUI(gui, titleGui);
+        this.tubo=geometria;
+        this.path=geometria.parameters.path;
+        this.radio=geometria.parameters.radius;
+        this.segmentos=geometria.parameters.tubularSegments;
+        this.t=punto;
+        this.r=rotado*Math.PI/180;
 
         var cartel = this.createCartelCompleto();
-        this.add(cartel);
+
+        cartel.position.y+=this.radio;
+        cartel.scale.set(0.2,0.2,0.2);
+    
+        this.superficie = new THREE.Object3D();
+        this.superficie.add(cartel);
+        
+    
+        this.superficie.rotation.z=this.r;
+        var movlateral = new THREE.Object3D();
+        movlateral.add(this.superficie);
+    
+        this.nodofinal = new THREE.Object3D();
+        this.nodofinal.add(movlateral);
+    
+    
+        var posTmp=this.path.getPointAt(this.t);
+    
+    
+        this.nodofinal.position.copy (posTmp);
+    
+        var tangente= this.path.getTangentAt(this.t);
+        posTmp.add(tangente);
+        var segmentoActual=Math.floor(this.t * this.segmentos);
+        this.nodofinal.up=this.tubo.binormals[segmentoActual];
+        this.nodofinal.lookAt(posTmp);
+    
+    
+        this.add(this.nodofinal);
     }
 
     createCartelCompleto() {
@@ -76,25 +109,12 @@ class Cartel extends THREE.Object3D {
         return shape;
     }
 
-
-
-    createGUI(gui, titleGui) {
-        // Controles para el movimiento de la parte móvil
-        this.guiControls = {
-            rotacion: 0
-        }
-
-        // Se crea una sección para los controles de la caja
-        var folder = gui.addFolder(titleGui);
-        // Estas lineas son las que añaden los componentes de la interfaz
-        // Las tres cifras indican un valor mínimo, un máximo y el incremento
-        folder.add(this.guiControls, 'rotacion', -0.125, 0.2, 0.001)
-            .name('Apertura : ')
-            .onChange((value) => this.setAngulo(-value));
-    }
-
     setAngulo(valor) {
         this.movil.rotation.z = valor;
+    }
+
+    efecto(){
+        return "cartel";
     }
 
     update() {

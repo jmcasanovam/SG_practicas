@@ -501,7 +501,7 @@ class personaje extends THREE.Object3D {
     this.lento=false;
     this.contadorgirorapido=0;
     this.contadorgirorandom=0;
-    this.contadorluces=1;
+    if(this.contadorluces>0) this.contadorluces=1;
   }
 
   efecto(n, ambientLight, pointLight){
@@ -514,7 +514,7 @@ class personaje extends THREE.Object3D {
         this.contadorgirorapido=200;
         break;
       case "lentejas":
-        this.contadorluces=1;
+        if(this.contadorluces>0) this.contadorluces=1;
         break;
       case "kebab":
         this.contadorgirorandom=0;

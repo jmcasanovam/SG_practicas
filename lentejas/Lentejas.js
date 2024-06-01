@@ -2,9 +2,44 @@
 import * as THREE from 'three';
 
 class Lentejas extends THREE.Object3D {
-    constructor() {
-        super();      
-        this.crearLentejas();
+    constructor(geometria, punto, rotado) {
+        super();  
+        this.tubo=geometria;
+        this.path=geometria.parameters.path;
+        this.radio=geometria.parameters.radius;
+        this.segmentos=geometria.parameters.tubularSegments;
+        this.t=punto;
+        this.r=rotado*Math.PI/180;
+
+        this.lentejas=this.crearLentejas();
+
+        this.lentejas.position.y+=this.radio+0.05;
+    
+        this.superficie = new THREE.Object3D();
+        this.superficie.add(this.lentejas);
+        
+    
+        this.superficie.rotation.z=this.r;
+        var movlateral = new THREE.Object3D();
+        movlateral.add(this.superficie);
+    
+        this.nodofinal = new THREE.Object3D();
+        this.nodofinal.add(movlateral);
+    
+    
+        var posTmp=this.path.getPointAt(this.t);
+    
+    
+        this.nodofinal.position.copy (posTmp);
+    
+        var tangente= this.path.getTangentAt(this.t);
+        posTmp.add(tangente);
+        var segmentoActual=Math.floor(this.t * this.segmentos);
+        this.nodofinal.up=this.tubo.binormals[segmentoActual];
+        this.nodofinal.lookAt(posTmp);
+    
+    
+        this.add(this.nodofinal);
     }
 
     crearPlato() {
@@ -53,7 +88,11 @@ class Lentejas extends THREE.Object3D {
         this.comida.position.y = 0.010009;
         this.platoLentejas.add(this.comida);
         this.platoLentejas.add(this.plato);
-        this.add(this.platoLentejas);
+        return this.platoLentejas;
+    }
+
+    efecto(){
+        return "lentejas";
     }
 
     
