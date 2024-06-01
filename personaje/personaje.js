@@ -73,7 +73,6 @@ class personaje extends THREE.Object3D {
 
   }
 
-
   createPersonaje() {
     this.crearMateriales();
     var personaje = new THREE.Object3D();
@@ -414,20 +413,62 @@ class personaje extends THREE.Object3D {
     this.rotacioncabeza=0;
     this.avance=0.0005;
     this.contadorlento=0;
-    this.empiezalento = false;
+    this.lento=false;
+    this.girorapido=false;
+    this.contadorgirorapido=0;
     this.puntuacion=0;
     this.vueltas=0;
+    this.girorandom=false;
+    this.contadorgirorandom=0;
+  }
+
+  resetEfectos(){
+    this.avance=0.0005;
+    this.contadorlento=0;
+    this.girorapido=false;
+    this.lento=false;
+    this.contadorgirorapido=0;
+    this.girorandom=false;
+    this.contadorgirorandom=0;
   }
 
   efecto(n){
     console.log("efecto:"+n);
     switch(n){
-      case "jeringuilla":
-        this.lento=true;
-        this.empiezalento = false;
+      case "pastilla":
+        this.resetEfectos();
+        break;
+      case "cartel":
+        this.girorapido=true;
+        this.contadorgirorapido=200;
+        break;
+      case "lentejas":
+        //
+        break;
+      case "kebab":
+        //
         break;
       case "dron":
         this.puntuacion+=100;
+        break;
+      case "caja globos":
+        //
+        break;
+      case "paloma":
+        this.puntuacion+=1000;
+        break;
+      case "jeringuilla":
+        this.lento=true;
+        this.contadorlento=200;
+        break;
+      case "pastilla caducada":
+        this.contadorlento=this.contadorlento*1.2;
+        this.contadorgirorapido=this.contadorgirorapido*1.2;
+      case "botella":
+        this.girorandom=true;
+        this.contadorgirorandom=200;
+        break;
+
       default:
         break;
     }
@@ -464,45 +505,52 @@ class personaje extends THREE.Object3D {
   update () {
     if(this.vueltas<3){
       this.animacion();
-      console.log("Puntuacion: "+this.puntuacion);
-      // console.log("Vueltas: "+this.vueltas);
-      if(this.lento && !this.empiezalento){
-        this.contadorlento=200;
-        this.empiezalento=true;
-      }
 
-      if (this.lento && this.contadorlento!=0) {
+      //Efecto lento
+      if (this.lento && this.contadorlento!=0) { //si tiene el efecto lento disminuimos el avance
         this.avance =0.00015;
         this.contadorlento= this.contadorlento-1;
       }
       else {
-        this.avance=0.0006;
+        this.avance=0.0006; //si ya ha terminado el contador
         this.lento = false;
-        this.empiezalento=false;
-
       }
 
+      //Avance en t y contador de vueltas
       this.t=(this.t+this.avance);
       if (this.t >= 1) {
         this.vueltas++;
         this.t = this.t % 1;
       }
 
+      //Posicionar en tubo
       var posTmp=this.path.getPointAt(this.t);
-
       this.nodofinal.position.copy (posTmp);
-
       var tangente= this.path.getTangentAt(this.t);
       posTmp.add(tangente);
       var segmentoActual=Math.floor(this.t * this.segmentos);
       this.nodofinal.up=this.tubo.binormals[segmentoActual];
       this.nodofinal.lookAt(posTmp);
 
-      if (this.rotarD) {
-        this.r += 0.1;
-      }else if (this.rotarI) {
-        this.r -= 0.1;
+      //Giro en el tubo
+      this.giro=0;
+      if(this.rotarD){
+        this.giro= 0.025;
+        if(this.girorapido) this.giro+= 0.025;
+        if(this.girorandom) {
+          this.giro*=(Math.floor(Math.random() * (3)) + 0.1);
+          this.contadorgirorandom-=1;
+        }
       }
+      else if(this.rotarI){
+        this.giro= -0.025;
+        if(this.girorapido) this.giro-= 0.025;
+        if(this.girorandom) {
+          this.giro*=(Math.floor(Math.random() * (3)) + 0.1);
+          this.contadorgirorandom-=1;
+        }
+      }
+      this.r+=this.giro;
       this.nodofinal.rotation.z = this.r; 
     }
   }
