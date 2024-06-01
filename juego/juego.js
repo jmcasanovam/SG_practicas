@@ -23,41 +23,28 @@ class Juego extends THREE.Object3D {
     
 
     var mapam = new mapa();
+    this.add(mapam);
     this.persona = new personaje(mapam.getGeometry());
+    this.animados.push(this.persona);
+    this.add(this.persona);
     this.meta= new Meta(mapam.getGeometry());
-    this.dron0 = new dron(mapam.getGeometry(), 0.2, "0");
-    this.dron1 = new dron(mapam.getGeometry(), 0.3, "1");
-    this.dron2 = new dron(mapam.getGeometry(), 0.4, "2");
-    this.dron3 = new dron(mapam.getGeometry(), 0.6, "3");
-    this.dron4 = new dron(mapam.getGeometry(), 0.7, "4");
-    this.dron5 = new dron(mapam.getGeometry(), 0.8, "5");
-    this.cajag1 = new CajaGlobos(mapam.getGeometry(), 0.2, "6");
-    this.cajag2 = new CajaGlobos(mapam.getGeometry(), 0.4, "7");
-    this.cajag3 = new CajaGlobos(mapam.getGeometry(), 0.6, "8");
+    this.add(this.meta);
+    this.esfera = new Esfera();
+    this.add(this.esfera);
 
-    this.picks.push(this.dron0);
-    this.picks.push(this.dron1);
-    this.picks.push(this.dron2);
-    this.picks.push(this.dron3);
-    this.picks.push(this.dron4);
-    this.picks.push(this.dron5);
-    this.picks.push(this.cajag1);
-    this.picks.push(this.cajag2);
-    this.picks.push(this.cajag3);
-    
+    for(let i=0; i<6; i++){ //creamos drones
+      const dronm = new dron(mapam.getGeometry(), Math.random(), Math.random()*180, i.toString());
+      this.picks.push(dronm);
+      this.animados.push(dronm);
+    }
 
-    
-    this.animados.push(this.dron0);
-    this.animados.push(this.dron1);
-    this.animados.push(this.dron2);
-    this.animados.push(this.dron3);
-    this.animados.push(this.dron4);
-    this.animados.push(this.dron5);
+    for(let i=6; i<9; i++){ //creamos drones
+      const caja = new CajaGlobos(mapam.getGeometry(), Math.random(), Math.random()*180, i.toString());
+      this.picks.push(caja);
+    }
 
     for(let i=0; i<6; i++){  //crear jeringuillas
-      var numero=Math.random();
-      console.log("Random:"+numero);
-      const jeringa= new jeringuilla(mapam.getGeometry(), numero, Math.random()*180);
+      const jeringa= new jeringuilla(mapam.getGeometry(), Math.random(), Math.random()*180);
       this.animados.push(jeringa);
       this.objetosColisiones.push(jeringa);
     }
@@ -66,7 +53,6 @@ class Juego extends THREE.Object3D {
     this.crearCajasColisiones();
 
 
-    this.animados.push(this.persona);
 
     for(let jer of this.objetosColisiones){
       this.add(jer);
@@ -74,14 +60,6 @@ class Juego extends THREE.Object3D {
     for(let jer of this.picks){
       this.add(jer);
     }
-
-    
-    this.add(this.persona);
-    this.add(mapam);
-    this.add(this.meta);
-
-    this.esfera = new Esfera();
-    this.add(this.esfera);
 
     //Almacenar la luz para cambiar su color despues
     this.ambientLight = null;
