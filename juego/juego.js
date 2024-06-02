@@ -29,7 +29,7 @@ class Juego extends THREE.Object3D {
     
 
     var mapam = new mapa();
-    // this.add(mapam);
+    this.add(mapam);
     this.persona = new personaje(mapam.getGeometry());
     this.animados.push(this.persona);
     this.add(this.persona);
@@ -55,7 +55,7 @@ class Juego extends THREE.Object3D {
       this.objetosColisiones.push(jeringa);
     }
 
-    for(let i=0; i<6; i++){  //crear botellas
+    for(let i=0; i<10; i++){  //crear botellas
       const botella= new Botella(mapam.getGeometry(), Math.random(), Math.random()*180);
       this.objetosColisiones.push(botella);
     }
@@ -83,21 +83,20 @@ class Juego extends THREE.Object3D {
       this.objetosColisiones.push(objeto2);
     }
 
-    for(let i=0; i<2; i++){  //crear pastillas
-      const objeto= new Tractor(mapam.getGeometry(), Math.random(), Math.random()*180);
-      this.objetosColisiones.push(objeto);
-    }
+    
 
-
-
-
-
-
-    const auxiliar = new Tractor(mapam.getGeometry(), 0.01, 180);
-    this.add(auxiliar);
-
+    // const auxiliar = new Tractor(mapam.getGeometry(), 0.01, 180);
+    // this.add(auxiliar);
 
     this.crearCajasColisiones();
+
+    for(let i=0; i<2; i++){  //crear tractores
+      const objeto= new Tractor(mapam.getGeometry(), Math.random(), Math.random()*180);
+      this.objetosColisiones.push(objeto);
+      var cajaFigura1=new THREE.Box3;
+      cajaFigura1=objeto.getCajaColision();
+      this.cajasColisiones.push(cajaFigura1);
+    }
 
 
 
@@ -127,7 +126,7 @@ class Juego extends THREE.Object3D {
     for(let i=0; i<this.objetosColisiones.length; i++){
       var cajaFigura1 = new THREE.Box3();
       cajaFigura1.setFromObject(this.objetosColisiones[i]);
-      this.cajasColisiones.push(cajaFigura1)
+      this.cajasColisiones.push(cajaFigura1);
     }
   }
 

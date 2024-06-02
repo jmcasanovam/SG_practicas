@@ -543,6 +543,7 @@ class personaje extends THREE.Object3D {
         this.contadorluces*=1.2;
       case "botella":
         this.contadorgirorandom=200;
+        this.puntuacion+=100;
         break;
       case "tractor":
         this.lento=true;

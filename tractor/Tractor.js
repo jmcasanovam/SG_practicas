@@ -12,11 +12,12 @@ class Tractor extends THREE.Object3D {
         this.segmentos=geometria.parameters.tubularSegments;
         this.t=punto;
         this.r=rotado*Math.PI/180;
+        this.cajaColision = new THREE.Box3();
 
         var loader = new OBJLoader();
         var self=this;
         loader.load('../tractor/Tractor.obj', function (obj) {
-            obj.position.set(0, 0, -10); // Establecer la posición del objeto
+            obj.position.set(0, 0, 0); // Establecer la posición del objeto
 
             // Escalar el objeto
             obj.scale.set(0.2, 0.2, 0.2); // Escalar a la mitad del tamaño original
@@ -34,7 +35,7 @@ class Tractor extends THREE.Object3D {
                     }
                 });
                 obj.scale.set(0.01,0.01,0.01);
-                obj.position.y+=self.radio;
+                obj.position.y+=self.radio+0.3;
     
                 self.superficie = new THREE.Object3D();
                 self.superficie.add(obj);
@@ -59,6 +60,7 @@ class Tractor extends THREE.Object3D {
                 self.nodofinal.up=self.tubo.binormals[segmentoActual];
                 self.nodofinal.lookAt(posTmp);
 
+                self.cajaColision.setFromObject(self.nodofinal);
 
                 self.add(self.nodofinal);
             });
@@ -66,7 +68,12 @@ class Tractor extends THREE.Object3D {
             console.error(error);
         });
 
+        // this.cajaColision=self.cajaColision;
         
+    }
+
+    getCajaColision(){
+        return this.cajaColision;
     }
 
     efecto(){
