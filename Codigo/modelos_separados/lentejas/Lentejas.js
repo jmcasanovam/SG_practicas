@@ -38,7 +38,7 @@ class Lentejas extends THREE.Object3D {
         const geometria = new THREE.CircleGeometry(radio, segmentos);
 
         var textureLoader = new THREE.TextureLoader();
-        var texture = textureLoader.load('../imgs/lentejas3.png');
+        var texture = textureLoader.load('../../imgs/lentejas3.png');
         const material = new THREE.MeshPhongMaterial({ map: texture, color: 0xF0F0F0 });
         const comida = new THREE.Mesh(geometria, material);
         comida.rotation.x = -Math.PI / 2;

@@ -9,7 +9,7 @@ class Paloma extends THREE.Object3D {
 
         var loader = new OBJLoader();
         var self = this;
-        loader.load('Paloma.obj', function (obj) {
+        loader.load('../../paloma/Paloma.obj', function (obj) {
             obj.position.set(0, 0, 0); // Establecer la posición del objeto
 
             // Escalar el objeto

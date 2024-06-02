@@ -28,8 +28,8 @@ class personaje extends THREE.Object3D {
 
   crearMateriales(){
     var textureLoader = new THREE.TextureLoader();
-    var texture = textureLoader.load('../imgs/armadura.jpg');
-    var normalMap = textureLoader.load('../imgs/armadura_normal.png');
+    var texture = textureLoader.load('../../imgs/armadura.jpg');
+    var normalMap = textureLoader.load('../../imgs/armadura_normal.png');
 
     this.materialarmadura = new THREE.MeshStandardMaterial({ 
       map: texture,

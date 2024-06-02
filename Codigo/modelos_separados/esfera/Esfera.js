@@ -10,7 +10,7 @@ class Esfera extends THREE.Object3D {
     crearEsfera() {
         //Cargo la textura
         var textureLoader = new THREE.TextureLoader();
-        var texture = textureLoader.load('../imgs/cielo.jpg');
+        var texture = textureLoader.load('../../imgs/cielo.jpg');
 
         //Creo el material con la textura
         const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });

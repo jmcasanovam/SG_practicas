@@ -5,7 +5,7 @@ class Meta extends THREE.Object3D {
         super();
         
         var textureLoader = new THREE.TextureLoader();
-        var texture = textureLoader.load('../imgs/textura-ajedrezada.jpg');
+        var texture = textureLoader.load('../../imgs/textura-ajedrezada.jpg');
 
         var material = new THREE.MeshStandardMaterial({ 
             map: texture,

@@ -19,8 +19,8 @@ class mapa extends THREE.Object3D {
 
   crearMaterial() {
     var textureLoader = new THREE.TextureLoader();
-    var texture = textureLoader.load('../imgs/cesped2.jpg');
-    var normalMap = textureLoader.load('../imgs/cesped2_normal.png');
+    var texture = textureLoader.load('../../imgs/cesped2.jpg');
+    var normalMap = textureLoader.load('../../imgs/cesped2_normal.png');
 
     const material = new THREE.MeshStandardMaterial({ 
       map: texture,

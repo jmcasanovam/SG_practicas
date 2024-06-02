@@ -123,9 +123,6 @@ class dron extends THREE.Object3D {
 
   
   update () {
-    this.r=(this.r+(Math.PI*2)*0.5/360)%(Math.PI*2);
-
-    this.superficie.rotation.z=this.r;
   }
 }
 

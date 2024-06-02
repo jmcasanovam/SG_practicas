@@ -8,13 +8,13 @@ class Tractor extends THREE.Object3D {
 
         var loader = new OBJLoader();
         var self=this;
-        loader.load('../tractor/Tractor.obj', function (obj) {
+        loader.load('../../tractor/Tractor.obj', function (obj) {
             // Escalar el objeto
             obj.scale.set(0.1, 0.1, 0.1); // Escalar a la mitad del tamaño original
 
             // Crear la textura
             var textureLoader = new THREE.TextureLoader();
-            textureLoader.load('../tractor/Texure_Tractor.jpg', function (texture) {
+            textureLoader.load('../../tractor/Texure_Tractor.jpg', function (texture) {
                 // Asignar la textura al material
                 var material = new THREE.MeshStandardMaterial({ map: texture });
 

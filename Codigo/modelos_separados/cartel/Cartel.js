@@ -41,7 +41,7 @@ class Cartel extends THREE.Object3D {
         var cartelGeometry = new THREE.ExtrudeGeometry(cartelShape, options1);
 
         var textureLoader = new THREE.TextureLoader();
-        var texture = textureLoader.load('../imgs/suelo_mojado.png', function (texture) {
+        var texture = textureLoader.load('../../imgs/suelo_mojado.png', function (texture) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping; // Hace que la textura se repita
             texture.repeat.set(2, 1.1); // Repite la textura 2 veces en horizontal y 1.1 en vertical
 

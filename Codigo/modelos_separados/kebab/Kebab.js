@@ -127,7 +127,7 @@ class Kebab extends THREE.Object3D {
 
         var geometry = new THREE.ExtrudeGeometry(formaLechuga, opciones);
 
-        var texture = new THREE.TextureLoader().load('../imgs/lechuga.png', function (texture) {
+        var texture = new THREE.TextureLoader().load('../../imgs/lechuga.png', function (texture) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping; // Hace que la textura se repita
             texture.repeat.set(2, 1); // Repite la textura 2 veces en horizontal y 1 en vertical
         });
