@@ -3,8 +3,19 @@ import * as THREE from 'three'
 class dron extends THREE.Object3D {
   constructor() {
     super();
-    var dron = this.createDron();
-    this.add(dron);
+    
+
+    this.dron = this.createDron();
+
+    this.add(this.dron);
+  }
+
+  efecto(){
+    return "dron";
+  }
+
+  efectoLuces(ambientLight, pointLight) {
+    
   }
 
   createDron(){
@@ -20,7 +31,13 @@ class dron extends THREE.Object3D {
     dron.add(brazo1);
     dron.add(brazo2);
     dron.add(brazo3);
-    dron.add(brazo4);    
+    dron.add(brazo4);
+
+    dron.traverse((child) => {//Se le asigna un nombre a cada objeto para poder identificarlo
+      if (child.isMesh) {
+        child.userData = this.userData;
+      }
+    });
 
     return dron;
   }
@@ -106,7 +123,9 @@ class dron extends THREE.Object3D {
 
   
   update () {
-    // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
+    this.r=(this.r+(Math.PI*2)*0.5/360)%(Math.PI*2);
+
+    this.superficie.rotation.z=this.r;
   }
 }
 
