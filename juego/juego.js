@@ -97,12 +97,17 @@ class Juego extends THREE.Object3D {
 
     this.crearCajasColisiones();
 
+    // const objeto= new Tractor(mapam.getGeometry(), 0.01, 180);
+    // this.add(objeto);
+
+
     for(let i=0; i<2; i++){  //crear tractores
-      const objeto= new Tractor(mapam.getGeometry(), Math.random(), Math.random()*180);
+      const objeto= new Tractor(mapam.getGeometry(), Math.random(), 180);
       this.objetosColisiones.push(objeto);
       var cajaFigura1=new THREE.Box3;
       cajaFigura1=objeto.getCajaColision();
       this.cajasColisiones.push(cajaFigura1);
+      this.animados.push(objeto);
     }
 
 

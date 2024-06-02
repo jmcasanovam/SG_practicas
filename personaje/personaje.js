@@ -442,8 +442,8 @@ class personaje extends THREE.Object3D {
       this.luz2.color.set(0xb32821);
     }
     else if(this.contadorluces<150){
-      this.luz1.color.set(0x00913f);
-      this.luz2.color.set(0xFFA500);
+      this.luz1.color.set(0x000000);
+      this.luz2.color.set(0x000000);
     }
     else if(this.contadorluces<200){
       this.luz1.color.set(0xFFD300);
@@ -458,8 +458,8 @@ class personaje extends THREE.Object3D {
       this.luz2.color.set(0xFFA500);
     }
     else if(this.contadorluces<350){
-      this.luz1.color.set(0xFFD300);
-      this.luz2.color.set(0x7D2181);
+      this.luz1.color.set(0x000000);
+      this.luz2.color.set(0x000000);
     }
     else if(this.contadorluces<400){
       this.luz1.color.set(0x4169E1);
@@ -493,6 +493,7 @@ class personaje extends THREE.Object3D {
     this.contadorgirorandom=0;
     this.contadorluces=0;
     this.lucescreadas=false;
+    this.contadorBotellas=0;
   }
 
   resetEfectos(){
@@ -544,7 +545,9 @@ class personaje extends THREE.Object3D {
         this.contadorluces*=1.2;
       case "botella":
         this.contadorgirorandom=200;
-        this.puntuacion+=100;
+        if(this.contadorBotellas<2) this.puntuacion+=200;
+        else this.puntuacion-=250;
+        this.contadorBotellas++;
         break;
       case "tractor":
         this.lento=true;

@@ -13,6 +13,10 @@ class Tractor extends THREE.Object3D {
         this.t=punto;
         this.r=rotado*Math.PI/180;
         this.cajaColision = new THREE.Box3();
+        this.superficie = new THREE.Object3D();
+        this.nodofinal = new THREE.Object3D();
+
+
 
         var loader = new OBJLoader();
         var self=this;
@@ -34,39 +38,39 @@ class Tractor extends THREE.Object3D {
                         child.material = material;
                     }
                 });
-                obj.scale.set(0.01,0.01,0.01);
-                obj.position.y+=self.radio+0.3;
+                obj.scale.set(0.008,0.008,0.008);
+                obj.rotation.y=Math.PI/2;
+                obj.position.x-=0.8;
+                obj.position.y+=self.radio+0.2;
     
-                self.superficie = new THREE.Object3D();
                 self.superficie.add(obj);
-                
-
-                self.superficie.rotation.z=self.r;
-                var movlateral = new THREE.Object3D();
-                movlateral.add(self.superficie);
-
-                self.nodofinal = new THREE.Object3D();
-                self.nodofinal.add(movlateral);
-
-
-                var posTmp=self.path.getPointAt(self.t);
-
-
-                self.nodofinal.position.copy (posTmp);
-
-                var tangente= self.path.getTangentAt(self.t);
-                posTmp.add(tangente);
-                var segmentoActual=Math.floor(self.t * self.segmentos);
-                self.nodofinal.up=self.tubo.binormals[segmentoActual];
-                self.nodofinal.lookAt(posTmp);
-
-                self.cajaColision.setFromObject(self.nodofinal);
-
-                self.add(self.nodofinal);
+              
             });
         }, undefined, function (error) {
             console.error(error);
         });
+
+        this.superficie.rotation.z=this.r;
+        var movlateral = new THREE.Object3D();
+        movlateral.add(this.superficie);
+
+        this.nodofinal.add(movlateral);
+
+
+        var posTmp=this.path.getPointAt(this.t);
+
+
+        this.nodofinal.position.copy (posTmp);
+
+        var tangente= this.path.getTangentAt(this.t);
+        posTmp.add(tangente);
+        var segmentoActual=Math.floor(this.t * this.segmentos);
+        this.nodofinal.up=this.tubo.binormals[segmentoActual];
+        this.nodofinal.lookAt(posTmp);
+
+        this.cajaColision.setFromObject(this.nodofinal);
+
+        this.add(this.nodofinal);
 
         // this.cajaColision=self.cajaColision;
         
@@ -81,7 +85,9 @@ class Tractor extends THREE.Object3D {
     }
 
     update() {
-        // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
+        this.cajaColision.setFromObject(this.nodofinal);
+        this.r=(this.r-(Math.PI*2)*0.5/360)%(Math.PI*2);
+        this.superficie.rotation.z=this.r;
     }
 }
 
