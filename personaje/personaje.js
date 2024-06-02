@@ -477,8 +477,6 @@ class personaje extends THREE.Object3D {
     }
   }
 
-
-
   variablesEfectos(){
     this.movimientopierna = true;
     this.rotacionpierna=0;
