@@ -65,9 +65,6 @@ class mapa extends THREE.Object3D {
     return new THREE.CatmullRomCurve3 (points, true);
   }
   
-  update () {
-    // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
-  }
 }
 
 export { mapa }

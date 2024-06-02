@@ -109,17 +109,10 @@ class Cartel extends THREE.Object3D {
         return shape;
     }
 
-    setAngulo(valor) {
-        this.movil.rotation.z = valor;
-    }
-
     efecto(){
         return "cartel";
     }
 
-    update() {
-        // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
-    }
 }
 
 export { Cartel }

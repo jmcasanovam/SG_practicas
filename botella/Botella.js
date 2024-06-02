@@ -74,13 +74,6 @@ class Botella extends THREE.Object3D {
         return "botella";
     }
 
-    
-
-
-
-    update() {
-        // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
-    }
 }
 
 export { Botella }

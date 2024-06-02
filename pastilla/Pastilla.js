@@ -106,18 +106,11 @@ class Pastilla extends THREE.Object3D {
         return objetoRevolucion;
     }
 
-    setAngulo(valor) {
-        this.movil.rotation.z = valor;
-    }
-
     efecto(){
         if(this.caducado)return "pastilla caducada";
         else return "pastilla";
     }
 
-    update() {
-        // No hay nada que actualizar ya que la apertura de la grapadora se ha actualizado desde la interfaz
-    }
 }
 
 export { Pastilla }

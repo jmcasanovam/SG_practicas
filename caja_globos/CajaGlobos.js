@@ -126,18 +126,7 @@ class CajaGlobos extends THREE.Object3D {
     return "caja globos";
   }
 
-  efectoLuces(ambientLight, pointLight) {
-    // return 0x00FF00;
-    ambientLight.color.set(0xffffff);
-    ambientLight.intensity = 0.1;
-    pointLight.color.set(0xFFFFFF);
-    pointLight.intensity = 1;
-  }
   
-  
-  
-  update () {
-  }
   
 }
 

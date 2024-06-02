@@ -49,9 +49,6 @@ class dron extends THREE.Object3D {
     return "dron";
   }
 
-  efectoLuces(ambientLight, pointLight) {
-    
-  }
 
   createDron(){
     var dron=new THREE.Object3D();

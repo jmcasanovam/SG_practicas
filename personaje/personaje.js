@@ -537,10 +537,10 @@ class personaje extends THREE.Object3D {
         this.pointLight=pointLight
         break;
       case "pastilla caducada":
-        this.contadorlento=this.contadorlento*1.2;
-        this.contadorgirorapido=this.contadorgirorapido*1.2;
-        this.contadorgirorandom*=1.2;
-        this.contadorluces*=1.2;
+        this.contadorlento=Math.round(this.contadorlento*1.2);
+        this.contadorgirorapido=Math.round(this.contadorgirorapido*1.2);
+        this.contadorgirorandom=Math.round(this.contadorgirorandom*1.2);
+        this.contadorluces=Math.round(this.contadorluces*1.2);
       case "botella":
         this.contadorgirorandom=200;
         if(this.contadorBotellas<2) this.puntuacion+=200;

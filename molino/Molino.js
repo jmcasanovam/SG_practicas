@@ -111,10 +111,6 @@ class Molino extends THREE.Object3D {
     }
     
 
-    setAngulo(valor) {
-        this.movil.rotation.z = valor;
-    }
-
     update() {
         this.cabeza.rotation.y += 0.005;
         this.aspas.rotation.x += 0.02;
