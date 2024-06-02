@@ -5,21 +5,33 @@ class mapa extends THREE.Object3D {
   constructor() {
     super();
 
-    const geometryT = new THREE.TorusKnotGeometry( 2, 0.4); 
+    const geometryT = new THREE.TorusKnotGeometry( 4, 1.5); 
     const path = this.getPathFromTorusKnot(geometryT);
     this.geometry = new THREE.TubeGeometry( path, 200, 0.4, 8, true );
-    const material = new THREE.MeshStandardMaterial( { color: 0x0000ff , opacity:0.5, transparent:true } ); 
+    // const material = new THREE.MeshStandardMaterial( { color: 0x0000ff } ); 
+    const material = this.crearMaterial();
     const mesh = new THREE.Mesh( this.geometry, material );
 
+    
     
     this.add( mesh );
   }
 
-  createMapa(){
-    
-    return mesh;
+  crearMaterial() {
+    var textureLoader = new THREE.TextureLoader();
+    var texture = textureLoader.load('../imgs/cesped2.jpg');
+    var normalMap = textureLoader.load('../imgs/cesped2_normal.png');
+
+    const material = new THREE.MeshStandardMaterial({ 
+      map: texture,
+      normalMap: normalMap,
+      normalScale: new THREE.Vector2(1, 1) // Ajusta este valor para cambiar la intensidad del relieve
+    });
+  
+    return material;
   }
 
+  
   getGeometry(){
     return this.geometry;
   }
