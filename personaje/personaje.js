@@ -518,6 +518,7 @@ class personaje extends THREE.Object3D {
         break;
       case "kebab":
         this.contadorgirorandom=0;
+        this.puntuacion+=50;
         break;
       case "dron":
         this.puntuacion+=100;

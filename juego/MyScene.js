@@ -57,7 +57,7 @@ class MyScene extends THREE.Scene {
     this.laps = this.model.persona.getVueltas();
     this.score = this.model.persona.getPuntuacion();
     this.updateHUD();
-}
+  }
 
   handleKeyBoardEvents() {
     document.addEventListener('keydown', (event) =>{
@@ -148,7 +148,6 @@ class MyScene extends THREE.Scene {
       //   console.log("El objeto no está en el array");
       // }
       // console.log("Le has dado al dron:" + this.selectedObject.efecto);
-
 
       this.model.pickeado(this.selectedObject.userData.name);
       

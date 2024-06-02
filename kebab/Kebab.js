@@ -2,8 +2,15 @@
 import * as THREE from 'three';
 
 class Kebab extends THREE.Object3D {
-    constructor() {
+    constructor(geometria, punto, rotado) {
         super();      
+
+        this.tubo=geometria;
+        this.path=geometria.parameters.path;
+        this.radio=geometria.parameters.radius;
+        this.segmentos=geometria.parameters.tubularSegments;
+        this.t=punto;
+        this.r=rotado*Math.PI/180;
         
         this.kebab = new THREE.Object3D();
         var tomate = this.crearTomate();
@@ -30,7 +37,39 @@ class Kebab extends THREE.Object3D {
         var lechuga3 = this.crearLechuga();
         lechuga3.position.set(0.27, 0.14, -0.4);
         this.kebab.add(lechuga3);
-        this.add(this.kebab);
+        //this.add(this.kebab);
+        this.kebab.rotation.x=Math.PI/2;
+        this.kebab.rotation.z=Math.PI;
+
+        this.kebab.scale.set(0.2,0.2,0.2);
+
+        this.kebab.position.y+=this.radio+0.2;
+    
+        this.superficie = new THREE.Object3D();
+        this.superficie.add(this.kebab);
+        
+    
+        this.superficie.rotation.z=this.r;
+        var movlateral = new THREE.Object3D();
+        movlateral.add(this.superficie);
+    
+        this.nodofinal = new THREE.Object3D();
+        this.nodofinal.add(movlateral);
+    
+    
+        var posTmp=this.path.getPointAt(this.t);
+    
+    
+        this.nodofinal.position.copy (posTmp);
+    
+        var tangente= this.path.getTangentAt(this.t);
+        posTmp.add(tangente);
+        var segmentoActual=Math.floor(this.t * this.segmentos);
+        this.nodofinal.up=this.tubo.binormals[segmentoActual];
+        this.nodofinal.lookAt(posTmp);
+    
+    
+        this.add(this.nodofinal);
     }
 
     crearTomate() {
@@ -138,6 +177,11 @@ class Kebab extends THREE.Object3D {
         lechuga.rotation.x = Math.PI / 2;
 
         return lechuga;
+    }
+
+
+    efecto(){
+        return "kebab";
     }
 
 

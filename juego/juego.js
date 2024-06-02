@@ -13,6 +13,8 @@ import { Lentejas } from '../lentejas/Lentejas.js';
 import { Molino } from '../molino/Molino.js';
 import { Pastilla } from '../pastilla/Pastilla.js';
 import { Tractor } from '../tractor/Tractor.js';
+import { Paloma } from '../paloma/Paloma.js';
+import { Kebab } from '../kebab/Kebab.js';
 
 
 
@@ -48,6 +50,9 @@ class Juego extends THREE.Object3D {
       const caja = new CajaGlobos(mapam.getGeometry(), Math.random(), Math.random()*180, i.toString());
       this.picks.push(caja);
     }
+    
+    const paloma = new Paloma(mapam.getGeometry(), Math.random(), Math.random()*180, "9");
+    this.picks.push(paloma);
 
     for(let i=0; i<6; i++){  //crear jeringuillas
       const jeringa= new jeringuilla(mapam.getGeometry(), Math.random(), Math.random()*180);
@@ -83,10 +88,12 @@ class Juego extends THREE.Object3D {
       this.objetosColisiones.push(objeto2);
     }
 
-    
+    for(let i=0; i<6; i++){  //crear kebab
+      const objeto= new Kebab(mapam.getGeometry(), Math.random(), Math.random()*180);
+      this.objetosColisiones.push(objeto);
+      this.animados.push(objeto);
+    }
 
-    // const auxiliar = new Tractor(mapam.getGeometry(), 0.01, 180);
-    // this.add(auxiliar);
 
     this.crearCajasColisiones();
 
@@ -97,7 +104,6 @@ class Juego extends THREE.Object3D {
       cajaFigura1=objeto.getCajaColision();
       this.cajasColisiones.push(cajaFigura1);
     }
-
 
 
     for(let jer of this.objetosColisiones){
