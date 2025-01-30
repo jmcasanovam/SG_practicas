@@ -2,7 +2,7 @@
 
 Repositorio para trabajar en la asignatura de Sistemas Gráficos.
 
-#Juego: Don Quijote de la Chancla
+# Juego: Don Quijote de la Chancla
 
 ## Descripción del Proyecto
 Este juego ofrece una reinterpretación contemporánea de las aventuras de Don Quijote, quien ha sido transportado al siglo XXI. En esta moderna travesía, el caballero se enfrenta a desafíos propios de la era digital y urbana, donde los molinos de viento se han transformado en obstáculos tecnológicos y las tentaciones actuales ponen a prueba su determinación.
